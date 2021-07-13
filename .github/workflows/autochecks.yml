@@ -1,0 +1,23 @@
+# Autochecks the repo, using formatting and linting commands we run on precommit JUUUUST to be sure
+name: Autochecks
+on:
+  push:
+    branches-ignore:
+      # We already run these on develop, no need to also run on main
+      - 'main'
+jobs:
+  autocheck:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # Each of these are yarn commands we should run defined in yarn
+        command: ['lint', 'type-check', 'format']
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - uses: c-hive/gha-yarn-cache@v1
+      - run: yarn install
+      - name: ${{ matrix.command }}
+        run: yarn ${{ matrix.command }}
