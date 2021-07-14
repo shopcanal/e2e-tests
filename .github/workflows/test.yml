@@ -1,0 +1,27 @@
+# Runs tests on all browsers on pushes (to any branch)
+name: Test
+on:
+  - push
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # Each of these are browser names we want to run tests against in parallel
+        browser: ['chromium', 'firefox', 'webkit']
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - uses: c-hive/gha-yarn-cache@v1
+      - run: yarn install
+
+        # Run tests on the specific browser
+      - name: ${{ matrix.command }}
+        run: yarn test --browser=${{ matrix.browser }}
+
+        # Make sure we upload screenshots after tests run
+      - uses: actions/upload-artifact@v2
+        with:
+          path: screenshots
