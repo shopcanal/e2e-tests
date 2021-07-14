@@ -1,0 +1,87 @@
+{
+  "name": "e2e-tests",
+  "version": "0.0.0-development",
+  "description": "Contains Playwright tests for running end to end tests across the full Canal ecosystem. Written in Typescript/Playwright but can be used to test any end to end flow ",
+  "repository": "https://github.com/shopcanal/e2e-tests.git",
+  "author": "Canal <shopcanal.com>",
+  "private": true,
+  "devDependencies": {
+    "@commitlint/cli": "^12.1.4",
+    "@commitlint/config-conventional": "^12.1.4",
+    "@playwright/test": "^1.12.3",
+    "@semantic-release/changelog": "^5.0.1",
+    "@semantic-release/git": "^9.0.0",
+    "@typescript-eslint/eslint-plugin": "^4.28.3",
+    "@typescript-eslint/parser": "^4.28.3",
+    "eslint": "^7.30.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-import-resolver-typescript": "^2.4.0",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-react": "^7.24.0",
+    "eslint-plugin-tsc": "^2.0.0",
+    "husky": "^7.0.0",
+    "lint-staged": "^11.0.1",
+    "playwright": "^1.12.3",
+    "prettier": "^2.3.2",
+    "semantic-release": "^17.4.4",
+    "typescript": "^4.3.5"
+  },
+  "scripts": {
+    "prepare": "husky install",
+    "test": "playwright test",
+    "test.all": "playwright test --browser=all",
+    "debug": "PWDEBUG=1 yarn test",
+    "help": "playwright --help",
+    "type-check": "tsc",
+    "format": "prettier --loglevel warn --write \"**/*.{js,ts,md,json,yml}\" \"!node_modules/**/*\"",
+    "lint": "eslint 'tests/**/*.ts'"
+  },
+  "release": {
+    "branches": [
+      "main"
+    ],
+    "plugins": [
+      [
+        "@semantic-release/commit-analyzer",
+        {
+          "preset": "angular",
+          "releaseRules": [
+            {
+              "type": "chore",
+              "release": "patch"
+            },
+            {
+              "type": "build",
+              "release": "patch"
+            },
+            {
+              "type": "test",
+              "release": "patch"
+            },
+            {
+              "type": "ci",
+              "release": "patch"
+            },
+            {
+              "type": "fix",
+              "release": "patch"
+            },
+            {
+              "type": "feat",
+              "release": "minor"
+            }
+          ],
+          "parserOpts": {
+            "noteKeywords": [
+              "BREAKING CHANGE",
+              "BREAKING CHANGES"
+            ]
+          }
+        }
+      ],
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/github",
+      "@semantic-release/git"
+    ]
+  }
+}
