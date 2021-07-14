@@ -10,19 +10,12 @@ jobs:
         # Each of these are browser names we want to run tests against in parallel
         browser: ['chromium', 'firefox', 'webkit']
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      # Uses the internal Github action for testing the tester!
+      - uses: ./
         with:
-          node-version: 14
-      - uses: c-hive/gha-yarn-cache@v1
-      - run: yarn install
-      - run: npx playwright install-deps ${{ matrix.browser }}
+          browser: ${{ matrix.browser }}
 
-        # Run tests on the specific browser
-      - name: ${{ matrix.command }}
-        run: yarn test --browser=${{ matrix.browser }}
-
-        # Make sure we upload screenshots after tests run
+        # Make sure we upload screenshots as artifacts after tests run
       - uses: actions/upload-artifact@v2
         if: always()
         with:

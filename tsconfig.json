@@ -15,6 +15,6 @@
     "resolveJsonModule": true,
     "isolatedModules": true
   },
-  "include": ["src", "tests"],
+  "include": ["tests"],
   "exclude": ["node_modules"]
 }

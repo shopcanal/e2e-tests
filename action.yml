@@ -12,18 +12,6 @@ inputs:
 outputs:
   test-runner:
     description: 'Output from Playwright'
-    value: ${{ steps.test-runner.outputs.test-output }}
 runs:
-  using: 'composite'
-  steps:
-    - uses: actions/setup-node@v2
-      with:
-        node-version: 14
-    - uses: c-hive/gha-yarn-cache@v1
-    - run: yarn install
-    - run: npx playwright install-deps ${{ inputs.browser }}
-
-    # Directly runs the `yarn test` for this browser and return the value
-    - id: test-runner
-      run: echo "::set-output name=test-output::$(yarn test --browserName=${{ inputs.browser }})"
-      shell: bash
+  using: 'node14'
+  main: 'dist/index.js'

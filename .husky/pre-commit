@@ -1,4 +1,7 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
+# Packages code into dist, and adds it to the staged changes.
+yarn package
+git add dist
 yarn lint-staged $1
