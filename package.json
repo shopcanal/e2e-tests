@@ -6,6 +6,9 @@
   "author": "Canal <shopcanal.com>",
   "private": true,
   "devDependencies": {
+    "@actions/core": "^1.4.0",
+    "@actions/exec": "^1.1.0",
+    "@actions/github": "^5.0.0",
     "@commitlint/cli": "^12.1.4",
     "@commitlint/config-conventional": "^12.1.4",
     "@playwright/test": "^1.12.3",
