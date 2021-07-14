@@ -1,5 +1,5 @@
 # Runs tests on all browsers on pushes (to any branch)
-name: Test
+name: E2E
 on:
   - push
 jobs:
@@ -16,6 +16,7 @@ jobs:
           node-version: 14
       - uses: c-hive/gha-yarn-cache@v1
       - run: yarn install
+      - run: npx playwright install-deps ${{ matrix.browser }}
 
         # Run tests on the specific browser
       - name: ${{ matrix.command }}
@@ -23,5 +24,7 @@ jobs:
 
         # Make sure we upload screenshots after tests run
       - uses: actions/upload-artifact@v2
+        if: always()
         with:
+          name: Test Screenshots
           path: screenshots
