@@ -10,12 +10,14 @@ jobs:
         # Each of these are browser names we want to run tests against in parallel
         browser: ['chromium', 'firefox', 'webkit']
     steps:
+      - uses: actions/checkout@v2
+
       # Uses the internal Github action for testing the tester!
       - uses: ./
         with:
           browser: ${{ matrix.browser }}
 
-        # Make sure we upload screenshots as artifacts after tests run
+      # Make sure we upload screenshots as artifacts after tests run
       - uses: actions/upload-artifact@v2
         if: always()
         with:
