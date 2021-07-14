@@ -1,4 +1,4 @@
-import { getInput, info, setFailed, setOutput, warning } from '@actions/core';
+import { getInput, info, setFailed, setOutput } from '@actions/core';
 import { exec } from '@actions/exec';
 
 /**
@@ -18,58 +18,41 @@ const TEST_RUNNER_OUTPUT_KEY = 'test-runner';
 
 // Does actual running of tests
 const runTests = async () => {
-  const browser = getInput(BROWSER_INPUT_KEY) || FALLBACK_BROWSER;
-  info(`Using browser set to "${browser}"`);
-
-  // Read std out for use in passing to output
-  let testRunnerOutput = '';
-  const options = {
-    listeners: {
-      /**
-       * Both pass it back as output and print it to the console
-       * @param {Object} data
-       */
-      stdout: (data) => {
-        const line = data.toString();
-        testRunnerOutput += line;
-        info(line);
-      },
-      /**
-       * Print out std error as a warning
-       * @param {Object} data
-       */
-      stderr: (data) => {
-        const line = data.toString();
-        warning(line);
-      },
-    },
-  };
-
-  // Install dependencies
   try {
+    const browser = getInput(BROWSER_INPUT_KEY) || FALLBACK_BROWSER;
+    info(`Using browser set to "${browser}"`);
+
+    // Read std out for use in passing to output
+    let testRunnerOutput = '';
+    const options = {
+      listeners: {
+        /**
+         * Pass output back as job output
+         * @param {Object} data
+         */
+        stdout: (data) => {
+          testRunnerOutput += data.toString();
+        },
+      },
+    };
+
+    // Install dependencies
     if ((await exec(`yarn`, [], options)) !== 0) {
       setFailed(`Couldn't install dependencies`);
       return;
     }
-  } catch (error) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    setFailed(error.message);
-    return;
-  }
 
-  // Try testing using yarn
-  try {
-    if ((await exec(`yarn`, [`test`, `browser=${browser}`, `./tests`], options)) !== 0) {
-      setFailed('Tests failed');
+    // Try testing using yarn
+    if ((await exec(`yarn test ./tests`, [`browser=${browser}`], options)) !== 0) {
+      setFailed('Running tests failed');
       return;
     }
+
+    setOutput(TEST_RUNNER_OUTPUT_KEY, testRunnerOutput);
   } catch (error) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     setFailed(error.message);
-    return;
   }
-
-  setOutput(TEST_RUNNER_OUTPUT_KEY, testRunnerOutput);
 };
 
 // Runs tests

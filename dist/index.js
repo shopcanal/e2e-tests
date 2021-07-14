@@ -2204,37 +2204,27 @@ require('./sourcemap-register.js');
 
     // Does actual running of tests
     const runTests = async () => {
-      const browser =
-        (0, _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)(BROWSER_INPUT_KEY) ||
-        FALLBACK_BROWSER;
-      (0, _actions_core__WEBPACK_IMPORTED_MODULE_0__.info)(`Using browser set to "${browser}"`);
-
-      // Read std out for use in passing to output
-      let testRunnerOutput = '';
-      const options = {
-        listeners: {
-          /**
-           * Both pass it back as output and print it to the console
-           * @param {Object} data
-           */
-          stdout: (data) => {
-            const line = data.toString();
-            testRunnerOutput += line;
-            (0, _actions_core__WEBPACK_IMPORTED_MODULE_0__.info)(line);
-          },
-          /**
-           * Print out std error as a warning
-           * @param {Object} data
-           */
-          stderr: (data) => {
-            const line = data.toString();
-            (0, _actions_core__WEBPACK_IMPORTED_MODULE_0__.warning)(line);
-          },
-        },
-      };
-
-      // Install dependencies
       try {
+        const browser =
+          (0, _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)(BROWSER_INPUT_KEY) ||
+          FALLBACK_BROWSER;
+        (0, _actions_core__WEBPACK_IMPORTED_MODULE_0__.info)(`Using browser set to "${browser}"`);
+
+        // Read std out for use in passing to output
+        let testRunnerOutput = '';
+        const options = {
+          listeners: {
+            /**
+             * Pass output back as job output
+             * @param {Object} data
+             */
+            stdout: (data) => {
+              testRunnerOutput += data.toString();
+            },
+          },
+        };
+
+        // Install dependencies
         if (
           (await (0, _actions_exec__WEBPACK_IMPORTED_MODULE_1__.exec)(`yarn`, [], options)) !== 0
         ) {
@@ -2243,34 +2233,27 @@ require('./sourcemap-register.js');
           );
           return;
         }
-      } catch (error) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        (0, _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)(error.message);
-        return;
-      }
 
-      // Try testing using yarn
-      try {
+        // Try testing using yarn
         if (
           (await (0, _actions_exec__WEBPACK_IMPORTED_MODULE_1__.exec)(
-            `yarn`,
-            [`test`, `browser=${browser}`, `./tests`],
+            `yarn test ./tests`,
+            [`browser=${browser}`],
             options,
           )) !== 0
         ) {
-          (0, _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)('Tests failed');
+          (0, _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)('Running tests failed');
           return;
         }
+
+        (0, _actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput)(
+          TEST_RUNNER_OUTPUT_KEY,
+          testRunnerOutput,
+        );
       } catch (error) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         (0, _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)(error.message);
-        return;
       }
-
-      (0, _actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput)(
-        TEST_RUNNER_OUTPUT_KEY,
-        testRunnerOutput,
-      );
     };
 
     // Runs tests

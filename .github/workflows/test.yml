@@ -14,12 +14,6 @@ jobs:
 
       # Uses the internal Github action for testing the tester!
       - uses: ./
+        name: test ${{ matrix.browser }}
         with:
           browser: ${{ matrix.browser }}
-
-      # Make sure we upload screenshots as artifacts after tests run
-      - uses: actions/upload-artifact@v2
-        if: always()
-        with:
-          name: Test Screenshots (${{ matrix.browser }})
-          path: screenshots
