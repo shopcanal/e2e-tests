@@ -1,4 +1,5 @@
 import { getInput, info, setFailed, setOutput } from '@actions/core';
+import type { ExecOptions } from '@actions/exec';
 import { exec } from '@actions/exec';
 
 /**
@@ -24,12 +25,8 @@ const runTests = async () => {
 
     // Read std out for use in passing to output
     let testRunnerOutput = '';
-    const options = {
+    const options: ExecOptions = {
       listeners: {
-        /**
-         * Pass output back as job output
-         * @param {Object} data
-         */
         stdout: (data) => {
           testRunnerOutput += data.toString();
         },

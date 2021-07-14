@@ -24,7 +24,7 @@ When you make changes to the tests, the exposed Github Action will automatically
 run the changes when referenced from another repo, and the internal `test.yml`
 action will also run them automatically.
 
-However, making changes to index.js (the runner for the exposed Github Action)
+However, making changes to `index.ts` (the runner for the exposed Github Action)
 necessitates running `yarn package` to compile the changes using `@vercel/ncc`.
 It's done for you via a Husky hook, but can be run manually to be sure. Resulting
 code lands in `dist/` and should be committed with your other changes.
