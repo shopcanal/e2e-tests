@@ -42,7 +42,7 @@
     "help": "playwright --help",
     "package": "ncc build index.ts -m -o dist --license licenses.txt",
     "type-check": "tsc",
-    "format": "prettier --loglevel warn --write \"**/*.{js,ts,md,json,yml}\" \"!node_modules/**/*\"",
+    "format": "prettier --loglevel warn --write \"**/*.{js,ts,md,json,yml}\"",
     "lint": "eslint 'tests/**/*.ts'"
   },
   "release": {
