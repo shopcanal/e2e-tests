@@ -45,25 +45,32 @@ const runTests = async () => {
     },
   };
 
-  // Install deps
-  if ((await exec(`npx`, [`playwright`, `install-deps`, browser], options)) !== 0) {
-    setFailed('Tests failed');
+  // Install dependencies
+  try {
+    if ((await exec(`yarn`, [], options)) !== 0) {
+      setFailed(`Couldn't install dependencies`);
+      return;
+    }
+  } catch (error) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    setFailed(error.message);
     return;
   }
 
-  // Try testing
-  if ((await exec(`npx`, [`playwright`, `test`, `browser=${browser}`, `./tests`], options)) !== 0) {
-    setFailed('Tests failed');
+  // Try testing using yarn
+  try {
+    if ((await exec(`yarn`, [`test`, `browser=${browser}`, `./tests`], options)) !== 0) {
+      setFailed('Tests failed');
+      return;
+    }
+  } catch (error) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    setFailed(error.message);
     return;
   }
 
   setOutput(TEST_RUNNER_OUTPUT_KEY, testRunnerOutput);
 };
 
-// Runs tests and error handles
-try {
-  void runTests();
-} catch (error) {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-  setFailed(error.message);
-}
+// Runs tests
+void runTests();

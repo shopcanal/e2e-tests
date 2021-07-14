@@ -2233,27 +2233,37 @@ require('./sourcemap-register.js');
         },
       };
 
-      // Install deps
-      if (
-        (await (0, _actions_exec__WEBPACK_IMPORTED_MODULE_1__.exec)(
-          `npx`,
-          [`playwright`, `install-deps`, browser],
-          options,
-        )) !== 0
-      ) {
-        (0, _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)('Tests failed');
+      // Install dependencies
+      try {
+        if (
+          (await (0, _actions_exec__WEBPACK_IMPORTED_MODULE_1__.exec)(`yarn`, [], options)) !== 0
+        ) {
+          (0, _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)(
+            `Couldn't install dependencies`,
+          );
+          return;
+        }
+      } catch (error) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        (0, _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)(error.message);
         return;
       }
 
-      // Try testing
-      if (
-        (await (0, _actions_exec__WEBPACK_IMPORTED_MODULE_1__.exec)(
-          `npx`,
-          [`playwright`, `test`, `browser=${browser}`, `./tests`],
-          options,
-        )) !== 0
-      ) {
-        (0, _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)('Tests failed');
+      // Try testing using yarn
+      try {
+        if (
+          (await (0, _actions_exec__WEBPACK_IMPORTED_MODULE_1__.exec)(
+            `yarn`,
+            [`test`, `browser=${browser}`, `./tests`],
+            options,
+          )) !== 0
+        ) {
+          (0, _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)('Tests failed');
+          return;
+        }
+      } catch (error) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        (0, _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)(error.message);
         return;
       }
 
@@ -2263,13 +2273,8 @@ require('./sourcemap-register.js');
       );
     };
 
-    // Runs tests and error handles
-    try {
-      void runTests();
-    } catch (error) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      (0, _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)(error.message);
-    }
+    // Runs tests
+    void runTests();
   })();
 
   module.exports = __webpack_exports__;
