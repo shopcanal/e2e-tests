@@ -6,5 +6,5 @@ echo "Installing packages..."
 yarn
 
 echo "Running tests on $BROWSER..."
-yarn test --browser=$BROWSER
+HOME=/root yarn test --browser=$BROWSER
 
