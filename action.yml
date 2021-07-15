@@ -9,9 +9,8 @@ inputs:
     description: 'The browser against which to run tests, defaults to all if not provided'
     required: false
     default: 'all'
-outputs:
-  test-runner:
-    description: 'Output from Playwright'
 runs:
-  using: 'node12'
-  main: 'dist/index.js'
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - '${{ inputs.browser }}'

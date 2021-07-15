@@ -9,7 +9,8 @@ verify behavior anywhere in the stack.
 There's a Github Action specified here to run the tests for a particular browser. Put this in your workflow yml file to
 start using it, assuming you're keeping browser name in a `matrix` variable. If not specified, the browser will default
 to all browsers. Use `main` to keep up to date against the latest E2E tests written, or a specific version to pin tests
-to that version. Usually you want `main`.
+to that version. Usually you want `main`. Github action is written in Dockerfile + action.yml + action.sh if you need
+to change it.
 
 ```yml
 steps:
@@ -23,11 +24,6 @@ steps:
 When you make changes to the tests, the exposed Github Action will automatically
 run the changes when referenced from another repo, and the internal `test.yml`
 action will also run them automatically.
-
-However, making changes to `index.ts` (the runner for the exposed Github Action)
-necessitates running `yarn package` to compile the changes using `@vercel/ncc`.
-It's done for you via a Husky hook, but can be run manually to be sure. Resulting
-code lands in `dist/` and should be committed with your other changes.
 
 ## Setup
 

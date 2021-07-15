@@ -13,6 +13,6 @@
     "resolveJsonModule": true,
     "isolatedModules": true
   },
-  "include": ["index.ts", "tests"],
+  "include": ["tests"],
   "exclude": ["node_modules"]
 }
