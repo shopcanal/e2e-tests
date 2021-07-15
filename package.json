@@ -1,14 +1,18 @@
 {
   "name": "e2e-tests",
   "version": "0.0.0-development",
-  "description": "Contains Playwright tests for running end to end tests across the full Canal ecosystem. Written in Typescript/Playwright but can be used to test any end to end flow ",
+  "description": "Contains Playwright tests for running end to end tests across the full Canal ecosystem. Written in Typescript/Playwright but can be used to test any end to end flow. Exposes a Github Action to run tests",
+  "main": "index.ts",
   "repository": "https://github.com/shopcanal/e2e-tests.git",
   "author": "Canal <shopcanal.com>",
-  "private": true,
-  "devDependencies": {
+  "license": "MIT",
+  "homepage": "https://github.com/shopcanal/e2e-tests#readme",
+  "dependencies": {
     "@actions/core": "^1.4.0",
     "@actions/exec": "^1.1.0",
-    "@actions/github": "^5.0.0",
+    "@actions/github": "^5.0.0"
+  },
+  "devDependencies": {
     "@commitlint/cli": "^12.1.4",
     "@commitlint/config-conventional": "^12.1.4",
     "@playwright/test": "^1.12.3",
@@ -16,6 +20,7 @@
     "@semantic-release/git": "^9.0.0",
     "@typescript-eslint/eslint-plugin": "^4.28.3",
     "@typescript-eslint/parser": "^4.28.3",
+    "@vercel/ncc": "^0.28.6",
     "eslint": "^7.30.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-import-resolver-typescript": "^2.4.0",
@@ -35,8 +40,9 @@
     "test.all": "playwright test --browser=all",
     "debug": "PWDEBUG=1 yarn test",
     "help": "playwright --help",
+    "package": "ncc build index.ts -m -o dist --license licenses.txt",
     "type-check": "tsc",
-    "format": "prettier --loglevel warn --write \"**/*.{js,ts,md,json,yml}\" \"!node_modules/**/*\"",
+    "format": "prettier --loglevel warn --write \"**/*.{js,ts,md,json,yml}\"",
     "lint": "eslint 'tests/**/*.ts'"
   },
   "release": {
