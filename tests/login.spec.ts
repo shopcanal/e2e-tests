@@ -31,7 +31,6 @@ test.describe('Login', () => {
    * click login and be redirected to the app
    */
   test('can fill out valid email and password and successfully log in', async ({ page }) => {
-    console.log(process.env.APP_TEST_PASSWORD);
     if (process.env.APP_TEST_PASSWORD) {
       // Fill out email and password
       await page.fill(EMAIL_INPUT_SELECTOR, 'clay+canalshopkeep@shopcanal.com');
@@ -45,6 +44,8 @@ test.describe('Login', () => {
 
       // Ensure that the URL is now the URL of the Inventory page
       expect(page.url()).toBe(INVENTORY_PAGE);
+    } else {
+      console.log('Could not log in because no APP_TEST_PASSWORD was provided');
     }
   });
 
