@@ -14,5 +14,3 @@ runs:
   image: 'Dockerfile'
   args:
     - '${{ inputs.browser }}'
-  env:
-    APP_TEST_PASSWORD: ${{ secrets.APP_TEST_PASSWORD }}
