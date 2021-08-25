@@ -45,7 +45,7 @@ test.describe('Login', () => {
       // Ensure that the URL is now the URL of the Inventory page
       expect(page.url()).toBe(INVENTORY_PAGE);
     } else {
-      console.log('Could not log in because no APP_TEST_PASSWORD was provided');
+      console.warn('Could not log in because no APP_TEST_PASSWORD was provided. Skipping test.');
     }
   });
 
