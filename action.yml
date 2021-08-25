@@ -15,4 +15,4 @@ runs:
   args:
     - '${{ inputs.browser }}'
   env:
-    APP_TEST_PASSWORD: ${{ env.APP_TEST_PASSWORD }}
+    APP_TEST_PASSWORD: ${{ secrets.APP_TEST_PASSWORD }}
