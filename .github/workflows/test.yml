@@ -15,5 +15,7 @@ jobs:
       # Uses the internal Github action for testing the tester!
       - uses: ./
         name: test ${{ matrix.browser }}
+        env:
+          APP_TEST_PASSWORD: ${{ secrets.APP_TEST_PASSWORD }}
         with:
           browser: ${{ matrix.browser }}

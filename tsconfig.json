@@ -13,6 +13,6 @@
     "resolveJsonModule": true,
     "isolatedModules": true
   },
-  "include": ["tests"],
+  "include": ["tests", "helpers"],
   "exclude": ["node_modules"]
 }
