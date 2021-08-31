@@ -5,6 +5,12 @@ module.exports = {
     'eslint --cache --fix --plugin tsc --rule \'tsc/config: [2, {configFile: "./tsconfig.json"}]\' ',
     'prettier --write',
   ],
+  // In the helpers folder we type check, lint, and format
+  'helpers/**/*.{ts,tsx}': [
+    () => 'tsc',
+    'eslint --cache --fix --plugin tsc --rule \'tsc/config: [2, {configFile: "./tsconfig.json"}]\' ',
+    'prettier --write',
+  ],
   // Outside of the project folder or in JSON/etc we just format and call it good
   '*.{ts,js,json,md,yml}': ['prettier --write'],
 };
