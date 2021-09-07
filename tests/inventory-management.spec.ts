@@ -21,7 +21,7 @@ test.describe('Inventory Management', () => {
   //   // Click the 'Activate' button
   //   await page.click('text=Activate');
 
-  //   // Wait for the modal to display
+  //   // Wait for the product management modal to display
   //   await page.waitForSelector('text=Manage product');
 
   //   // Select "Active" in the product status dropdown
@@ -34,8 +34,41 @@ test.describe('Inventory Management', () => {
   //   // We expect the modal to be closed
   //   expect(await page.$('text=Manage product')).toBeFalsy();
 
-  //   // We expect the 'Activate' button and 'Draft' status label to be gone
+  //   // We expect the 'Activate' button to be gone
   //   expect(await page.$('text=Activate')).toBeFalsy();
-  //   expect(await page.$('text=Draft')).toBeFalsy();
+  // });
+
+  /**
+   * Tests that we can add an approved product to Shopify as a Draft from Inventory
+   */
+  // test('can successfully add a product to Shopify as a Draft', async ({ page }) => {
+  //   // Click the 'Add to Shopify as Draft' button
+  //   await page.click('text=Add to Shopify as Draft');
+
+  //   // Wait for the payment information modal to display
+  //   await page.waitForSelector('text=Provide payment information to proceed');
+
+  //   // Expect the 'Save & Agree' button to be disabled
+  //   const button = await page.$('text=Save & Agree');
+  //   if (button) expect(await button.isDisabled()).toBeTruthy();
+
+  //   // Enter test card number into the payment info iframe
+  //   await page.click('iframe')
+  //   await page.keyboard.insertText('4242424242424242');
+  //   await page.keyboard.insertText('424')
+  //   await page.keyboard.insertText('242')
+  //   await page.keyboard.insertText('42424')
+
+  //   // Expect the 'Save & Agree' button to be enabled now
+  //   if (button) expect(await button.isDisabled()).toBeFalsy();
+
+  //   // // Click the "Save" button to save the product state
+  //   // await page.click('button#save-product-status-button')
+
+  //   // // We expect the modal to be closed
+  //   // expect(await page.$('text=Manage product')).toBeFalsy();
+
+  //   // // We expect the 'Activate' button to be gone
+  //   // expect(await page.$('text=Activate')).toBeFalsy();
   // });
 });
