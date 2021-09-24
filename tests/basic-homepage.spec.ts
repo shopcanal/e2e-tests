@@ -7,7 +7,7 @@ import { expect, test } from '@playwright/test';
 
 const MAIN_SITE = 'https://shopcanal.com/';
 const EXPECTED_PAGE_TITLE = 'Revolutionizing e-commerce | Canal';
-const EXPECTED_CAREERS_LINK = 'https://shopcanal.com/careers';
+const EXPECTED_CAREERS_LINK = 'https://jobs.lever.co/shop-canal';
 
 test('Home - Correct page title', async ({ page }) => {
   await page.goto(MAIN_SITE);
