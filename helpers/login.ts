@@ -26,7 +26,7 @@ export const logInSuccessfully = async (page: Page): Promise<void> => {
     await page.waitForSelector('text=Overview');
 
     // Ensure that the URL is now the URL of the Shopkeep Inventory page
-    expect(page.url()).toBe(SK_INVENTORY_PAGE);
+    expect(page.url().includes(SK_INVENTORY_PAGE)).toBeTruthy();
   } else {
     console.warn('Could not log in because no APP_TEST_PASSWORD was provided. Failing test.');
     expect(true).toBe(false);
