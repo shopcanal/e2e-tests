@@ -24,7 +24,7 @@ test.describe('Navigation', () => {
     await page.waitForSelector('text=Inventory');
 
     // Ensure that the URL is for the SK inventory page
-    expect(page.url()).toBe(SK_INVENTORY_PAGE);
+    expect(page.url().includes(SK_INVENTORY_PAGE)).toBeTruthy();
   });
 
   test('can navigate successfully to the Settings page from the Settings tab', async ({ page }) => {
