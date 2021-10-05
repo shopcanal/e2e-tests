@@ -5,7 +5,7 @@ import { expect, test } from '@playwright/test';
  * running as intended. Just the basics.
  */
 
-const MAIN_SITE = 'https://shopcanal.com/';
+const MAIN_SITE = 'https://shopcanal.com';
 const EXPECTED_PAGE_TITLE = 'Revolutionizing e-commerce | Canal';
 const EXPECTED_CAREERS_LINK = 'https://shopcanal.com/careers';
 
@@ -18,7 +18,8 @@ test('Home - Correct page title', async ({ page }) => {
 
 test('Home - Careers link is correct', async ({ page }) => {
   await page.goto(MAIN_SITE);
-  const careersLink = await page.getAttribute('text=Careers', 'href');
+  const careersRoute = await page.getAttribute('text=Careers', 'href'); // expected to be "/careers"
+  const careersLink = `${MAIN_SITE}${careersRoute ?? ''}`;
 
   expect(careersLink).toBe(EXPECTED_CAREERS_LINK);
 });
