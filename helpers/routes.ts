@@ -1,7 +1,7 @@
-// const LOCALHOST = 'http://localhost:3000'
-const DEVELOP = 'https://develop.shopcanal.com';
+const LOCALHOST = 'http://localhost:3000';
+// const DEVELOP = 'https://develop.shopcanal.com';
 
-const DOMAIN = DEVELOP;
+const DOMAIN = LOCALHOST;
 
 /**
  * App URLs used across our various test files
