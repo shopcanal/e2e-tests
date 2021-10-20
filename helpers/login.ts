@@ -16,7 +16,6 @@ export const logInSuccessfully = async (page: Page): Promise<void> => {
     await page.goto(LOGIN_PAGE);
 
     // Fill out email and password
-    // await page.fill(LOGIN_EMAIL_INPUT_SELECTOR, 'clay+canalshopkeep@shopcanal.com');
     await page.fill(LOGIN_EMAIL_INPUT_SELECTOR, E2E_ACCOUNT_LOGIN);
     await page.fill(LOGIN_PASSWORD_INPUT_SELECTOR, process.env.APP_TEST_PASSWORD || '');
 
