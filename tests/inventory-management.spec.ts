@@ -64,7 +64,6 @@ test.describe('Inventory Management', () => {
     if (button) expect(await button.isDisabled()).toBeFalsy();
 
     // TODO: uncomment this code when the error around DeliveryProfile is fixed
-
     // // Click the "Save" button to save the product state
     // await page.click('button#update-saved-card-button');
 
