@@ -24,18 +24,17 @@ test.describe('Inventory Management', () => {
     // Wait for the product management modal to display
     await page.waitForSelector('text=Manage product');
 
+    // We expect the 'Save' button to be disabled
+    let button = await page.$('button#save-product-status-button');
+    if (button) expect(await button.isDisabled()).toBeTruthy();
+
     // Select "Active" in the product status dropdown
     const dropdown = await page.$('select#PolarisSelect1');
     await dropdown?.selectOption('ACTIVE');
 
-    // Click the "Save" button to save the product state
-    await page.click('button#save-product-status-button');
-
-    // We expect the modal to be closed
-    expect(await page.$('text=Manage product')).toBeFalsy();
-
-    // We expect the 'Activate' button to be gone
-    expect(await page.$('text=Activate')).toBeFalsy();
+    // We expect the 'Save' button to be active now
+    button = await page.$('button#save-product-status-button');
+    if (button) expect(await button.isDisabled()).toBeFalsy();
   });
 
   /**
@@ -62,15 +61,5 @@ test.describe('Inventory Management', () => {
     // Expect the 'Save & Agree' button to be enabled now
     button = await page.$('text=Save & Agree');
     if (button) expect(await button.isDisabled()).toBeFalsy();
-
-    // TODO: uncomment this code when the error around DeliveryProfile is fixed
-    // // Click the "Save" button to save the product state
-    // await page.click('button#update-saved-card-button');
-
-    // // We expect the modal to be closed
-    // expect(await page.$('text=Manage product')).toBeFalsy();
-
-    // // We expect the 'Add to Shopify as Draft' button to be gone
-    // expect(await page.$('text=Add to Shopify as Draft')).toBeFalsy();
   });
 });
