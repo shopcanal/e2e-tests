@@ -1,4 +1,4 @@
-// const LOCALHOST = 'http://localhost:3000';
+// const LOCALHOST = 'http://localhost:3000'
 const DEVELOP = 'https://develop.shopcanal.com';
 
 const DOMAIN = DEVELOP;
