@@ -17,6 +17,5 @@ jobs:
         name: test ${{ matrix.browser }}
         env:
           APP_TEST_PASSWORD: ${{ secrets.APP_TEST_PASSWORD }}
-          E2E_DATA_SETUP_URL: ${{ secrets.E2E_DATA_SETUP_URL }}
         with:
           browser: ${{ matrix.browser }}
