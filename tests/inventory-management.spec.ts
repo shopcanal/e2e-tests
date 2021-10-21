@@ -38,7 +38,8 @@ test.describe('Inventory Management', () => {
   });
 
   /**
-   * Tests that we can add an approved product to Shopify as a Draft from Inventory
+   * Tests that we can add an approved product to Shopify as a Draft from Inventory,
+   * as well as add a payment method
    */
   test('can successfully add a product to Shopify as a Draft', async ({ page }) => {
     // Click the 'Add to Shopify as Draft' button
@@ -52,7 +53,10 @@ test.describe('Inventory Management', () => {
     if (button) expect(await button.isDisabled()).toBeTruthy();
 
     // Enter test card number into the payment info iframe
-    await page.click('iframe');
+    const iframe = page.frames().find((frame) => frame.name().includes('privateStripeFrame'));
+    if (iframe) await iframe.waitForLoadState('domcontentloaded');
+    if (iframe) await iframe.click('form.ElementsApp');
+
     await page.keyboard.insertText('4242424242424242');
     await page.keyboard.insertText('424');
     await page.keyboard.insertText('242');
