@@ -6,7 +6,7 @@ import { expect, test } from '@playwright/test';
  * sure it has a collapsible element
  */
 
-const MAIN_SITE = 'https://shopcanal.com/';
+const MAIN_SITE = 'https://develop.shopcanal.com/';
 
 // All the FAQs as text
 const FAQ_TEXT = [
@@ -45,10 +45,6 @@ test('Has all FAQs', async ({ page }) => {
 });
 
 test('First FAQ dropdown can be clicked on', async ({ page }) => {
-  await page.evaluate(() => {
-    return new Promise((resolve) => setTimeout(resolve, 0));
-  });
-
   const expandedState = () => page.getAttribute(COLLAPSIBLE_SELECTOR, 'aria-expanded');
   const clickOnFaqLink = () => page.click(BUTTON_SELECTOR);
 
