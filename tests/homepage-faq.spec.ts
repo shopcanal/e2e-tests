@@ -15,6 +15,7 @@ const FAQ_TEXT = [
   'How do you make money?',
   'How does Canal make money?',
   'When will I be able to use Canal?',
+  'How do Storefronts handle shipping?',
 ];
 
 // The button that has text saying "What does Canal do?" inside of it
@@ -44,6 +45,10 @@ test('Has all FAQs', async ({ page }) => {
 });
 
 test('First FAQ dropdown can be clicked on', async ({ page }) => {
+  await page.evaluate(() => {
+    return new Promise((resolve) => setTimeout(resolve, 0));
+  });
+
   const expandedState = () => page.getAttribute(COLLAPSIBLE_SELECTOR, 'aria-expanded');
   const clickOnFaqLink = () => page.click(BUTTON_SELECTOR);
 
