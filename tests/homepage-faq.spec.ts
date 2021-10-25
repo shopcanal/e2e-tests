@@ -46,7 +46,6 @@ test('Has all FAQs', async ({ page }) => {
 
 test('First FAQ dropdown can be clicked on', async ({ page }) => {
   const expandedState = () => page.getAttribute(COLLAPSIBLE_SELECTOR, 'aria-expanded');
-  const clickOnFaqLink = () => page.click(BUTTON_SELECTOR);
 
   const height = async (state: 'attached' | 'visible') => {
     const element = await page.waitForSelector(COLLAPSIBLE_SELECTOR, {
@@ -63,7 +62,9 @@ test('First FAQ dropdown can be clicked on', async ({ page }) => {
   expect(await height('attached')).toBe(0);
 
   // Open the dropdown
-  await clickOnFaqLink();
+  await page.click('text=What does Canal do?');
+
+  setTimeout(() => '', 1000);
 
   // Ensure it's open and larger than 0
   expect(await expandedState()).toBe('true');
