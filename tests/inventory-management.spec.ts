@@ -54,13 +54,13 @@ test.describe('Inventory Management', () => {
 
     // Enter test card number into the payment info iframe
     const iframe = page.frames().find((frame) => frame.name().includes('privateStripeFrame'));
-    if (iframe) await iframe.waitForLoadState('domcontentloaded');
-    if (iframe) await iframe.click('form.ElementsApp');
-
-    await page.keyboard.insertText('4242424242424242');
-    await page.keyboard.insertText('424');
-    await page.keyboard.insertText('242');
-    await page.keyboard.insertText('42424');
+    if (iframe) {
+      await iframe.waitForLoadState('domcontentloaded');
+      await iframe.fill('[aria-label="Credit or debit card number"]', '4242424242424242');
+      await iframe.fill('[aria-label="Credit or debit card expiration date"]', '424');
+      await iframe.fill('[aria-label="Credit or debit card CVC/CVV"]', '242');
+      await iframe.fill('[aria-label="ZIP"]', '42424');
+    }
 
     // Expect the 'Save & Agree' button to be enabled now
     button = await page.$('text=Save & Agree');
