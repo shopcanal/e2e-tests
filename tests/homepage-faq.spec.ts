@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 
 /**
- * This file contains tests that confirm our main site, https://shopcanal.com, has an
+ * This file contains tests that confirm our main dev site, https://develop.shopcanal.com, has an
  * FAQ section that's working as expected. Checks each FAQ text for visibility and makes
  * sure it has a collapsible element
  */
