@@ -67,7 +67,7 @@ test.describe('Shopkeep Requests', () => {
     await page.click(ALL_TAB_SELECTOR);
     await page.waitForSelector('text=Showing 2 product requests');
 
-    // Check that there are no list items
+    // Check that there are two list items
     requestLineItems = await page.$$(LIST_ITEM_SELECTOR);
     expect(requestLineItems.length).toBe(2);
   });
