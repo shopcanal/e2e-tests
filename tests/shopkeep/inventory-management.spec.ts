@@ -1,12 +1,11 @@
 import { expect, test } from '@playwright/test';
-import { logInSuccessfully } from '../helpers/login';
+import { logInSuccessfully } from '../../helpers/login';
 
 /**
  * This file contains tests that confirm we can add and modify Shopify products
  * from within the Canal app
  */
-
-test.describe('Inventory Management', () => {
+test.describe('Shopkeep Inventory Management', () => {
   /**
    * We need to be logged in for each test, so we should log in before each one.
    */
