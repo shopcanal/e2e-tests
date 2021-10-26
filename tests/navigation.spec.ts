@@ -37,7 +37,12 @@ test.describe('Navigation', () => {
     expect(page.url().includes(SHOPKEEP_ROUTES.DISCOVER)).toBeTruthy();
   });
 
-  test('can navigate successfully to the Requests page from the Requests tab', async ({ page }) => {
+  test('can navigate successfully to the Requests page from the Requests tab', async ({
+    page,
+    browserName,
+  }) => {
+    test.skip(browserName === 'webkit', 'Flaky test on webkit - skipping for now');
+
     // Click the Requests link in the nav
     await page.click('#navRequests');
 
@@ -47,7 +52,12 @@ test.describe('Navigation', () => {
     expect(page.url().includes(SHOPKEEP_ROUTES.REQUESTS)).toBeTruthy();
   });
 
-  test('can navigate successfully to the Orders page from the Orders tab', async ({ page }) => {
+  test('can navigate successfully to the Orders page from the Orders tab', async ({
+    page,
+    browserName,
+  }) => {
+    test.skip(browserName === 'webkit', 'Flaky test on webkit - skipping for now');
+
     // Click the Orders link in the nav
     await page.click('#navOrders');
 
