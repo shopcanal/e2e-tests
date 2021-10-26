@@ -1,13 +1,13 @@
 import { expect, test } from '@playwright/test';
-import { logInSuccessfully } from '../helpers/login';
-import { SHOPKEEP_ROUTES } from '../helpers/routes';
+import { logInSuccessfully } from '../../helpers/login';
+import { SHOPKEEP_ROUTES } from '../../helpers/routes';
 
 /**
  * This file contains tests that confirm we can successfully navigate around the
  * SK app using the left-hand nav
  */
 
-test.describe('Navigation', () => {
+test.describe('Shopkeep Navigation', () => {
   /**
    * We need to be logged in for each test, so we should log in before each one.
    */

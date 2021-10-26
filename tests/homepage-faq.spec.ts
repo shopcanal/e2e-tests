@@ -18,9 +18,6 @@ const FAQ_TEXT = [
   'How do Storefronts handle shipping?',
 ];
 
-// The button that has text saying "What does Canal do?" inside of it
-const BUTTON_SELECTOR = `button:has(:text("${FAQ_TEXT[0]}"))`;
-
 // The element that has "Canal helps D2C brands" within it and is a collapsible element
 const COLLAPSIBLE_SELECTOR = '#basic-collapsible:has(:text("Canal helps D2C brands"))';
 
@@ -64,7 +61,7 @@ test('First FAQ dropdown can be clicked on', async ({ page, browserName }) => {
   expect(await height('attached')).toBe(0);
 
   // Open the dropdown
-  await page.click('text=What does Canal do?');
+  await page.click(`text=${FAQ_TEXT[0]}`);
 
   setTimeout(() => '', 1000);
 
