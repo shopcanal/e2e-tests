@@ -1,6 +1,6 @@
 import type { Page } from '@playwright/test';
 import { expect } from '@playwright/test';
-import { LOGIN_PAGE, SK_INVENTORY_PAGE } from './routes';
+import { LOGIN_PAGE, SHOPKEEP_ROUTES } from './routes';
 
 /**
  * Selectors used for logging in
@@ -26,7 +26,7 @@ export const logInSuccessfully = async (page: Page): Promise<void> => {
     await page.waitForSelector('text=Overview');
 
     // Ensure that the URL is now the URL of the Shopkeep Inventory page
-    expect(page.url().includes(SK_INVENTORY_PAGE)).toBeTruthy();
+    expect(page.url().includes(SHOPKEEP_ROUTES.INVENTORY)).toBeTruthy();
   } else {
     console.warn('Could not log in because no APP_TEST_PASSWORD was provided. Failing test.');
     expect(true).toBe(false);

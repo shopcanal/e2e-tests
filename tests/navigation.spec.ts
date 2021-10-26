@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { logInSuccessfully } from '../helpers/login';
-import { SK_FAQ_PAGE, SK_INVENTORY_PAGE, SK_SETTINGS_PAGE } from '../helpers/routes';
+import { SHOPKEEP_ROUTES } from '../helpers/routes';
 
 /**
  * This file contains tests that confirm we can successfully navigate around the
@@ -24,7 +24,37 @@ test.describe('Navigation', () => {
     await page.waitForSelector('text=Inventory');
 
     // Ensure that the URL is for the SK inventory page
-    expect(page.url().includes(SK_INVENTORY_PAGE)).toBeTruthy();
+    expect(page.url().includes(SHOPKEEP_ROUTES.INVENTORY)).toBeTruthy();
+  });
+
+  test('can navigate successfully to the Discover page from the Discover tab', async ({ page }) => {
+    // Click the Discover link in the nav
+    await page.click('#navDiscover');
+
+    await page.waitForSelector('text=Discover');
+
+    // Ensure that the URL is for the SK discover page
+    expect(page.url().includes(SHOPKEEP_ROUTES.DISCOVER)).toBeTruthy();
+  });
+
+  test('can navigate successfully to the Requests page from the Requests tab', async ({ page }) => {
+    // Click the Requests link in the nav
+    await page.click('#navRequests');
+
+    await page.waitForSelector('text=Requests');
+
+    // Ensure that the URL is for the SK requests page
+    expect(page.url().includes(SHOPKEEP_ROUTES.REQUESTS)).toBeTruthy();
+  });
+
+  test('can navigate successfully to the Orders page from the Orders tab', async ({ page }) => {
+    // Click the Orders link in the nav
+    await page.click('#navOrders');
+
+    await page.waitForSelector('text=Orders');
+
+    // Ensure that the URL is for the SK orders page
+    expect(page.url().includes(SHOPKEEP_ROUTES.ORDERS)).toBeTruthy();
   });
 
   test('can navigate successfully to the Settings page from the Settings tab', async ({ page }) => {
@@ -34,7 +64,7 @@ test.describe('Navigation', () => {
     await page.waitForSelector('text=Email address');
 
     // Ensure that the URL is for the SK settings page
-    expect(page.url()).toBe(SK_SETTINGS_PAGE);
+    expect(page.url()).toBe(SHOPKEEP_ROUTES.SETTINGS);
   });
 
   test('can navigate successfully to the FAQ page from the FAQ tab', async ({ page }) => {
@@ -44,6 +74,6 @@ test.describe('Navigation', () => {
     await page.waitForSelector('text=Frequently Asked Questions');
 
     // Ensure that the URL is for the SK FAQ page
-    expect(page.url()).toBe(SK_FAQ_PAGE);
+    expect(page.url()).toBe(SHOPKEEP_ROUTES.FAQ);
   });
 });
