@@ -4,6 +4,12 @@ const DOMAIN = 'https://develop.shopcanal.com';
  * App URLs used across our various test files
  */
 export const LOGIN_PAGE = `${DOMAIN}/login`;
-export const SK_INVENTORY_PAGE = `${DOMAIN}/shopkeep/inventory`;
-export const SK_SETTINGS_PAGE = `${DOMAIN}/shopkeep/settings`;
-export const SK_FAQ_PAGE = `${DOMAIN}/shopkeep/faq`;
+
+export const SHOPKEEP_ROUTES = {
+  INVENTORY: `${DOMAIN}/shopkeep/inventory`,
+  DISCOVER: `${DOMAIN}/shopkeep/discover`,
+  REQUESTS: `${DOMAIN}/shopkeep/requests`,
+  ORDERS: `${DOMAIN}/shopkeep/orders`,
+  SETTINGS: `${DOMAIN}/shopkeep/settings`,
+  FAQ: `${DOMAIN}/shopkeep/faq`,
+};
