@@ -71,4 +71,6 @@ test.describe('Shopkeep Requests', () => {
     requestLineItems = await page.$$(LIST_ITEM_SELECTOR);
     expect(requestLineItems.length).toBe(2);
   });
+
+  // TODO: click on the line item action buttons and test the request response pages
 });
