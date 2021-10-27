@@ -17,4 +17,6 @@ test.describe('Shopkeep Discover', () => {
 
     expect(page.url().includes(SHOPKEEP_ROUTES.DISCOVER)).toBeTruthy();
   });
+
+  // TODO: add tests once this page is ready to be launched
 });

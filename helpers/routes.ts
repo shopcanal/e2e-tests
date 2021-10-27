@@ -1,4 +1,6 @@
 const DOMAIN = 'https://develop.shopcanal.com';
+const SHOPKEEP = `${DOMAIN}/shopkeep`;
+const SUPPLIER = `${DOMAIN}/supplier`;
 
 /**
  * App URLs used across our various test files
@@ -6,10 +8,19 @@ const DOMAIN = 'https://develop.shopcanal.com';
 export const LOGIN_PAGE = `${DOMAIN}/login`;
 
 export const SHOPKEEP_ROUTES = {
-  INVENTORY: `${DOMAIN}/shopkeep/inventory`,
-  DISCOVER: `${DOMAIN}/shopkeep/discover`,
-  REQUESTS: `${DOMAIN}/shopkeep/requests`,
-  ORDERS: `${DOMAIN}/shopkeep/orders`,
-  SETTINGS: `${DOMAIN}/shopkeep/settings`,
-  FAQ: `${DOMAIN}/shopkeep/faq`,
+  INVENTORY: `${SHOPKEEP}/inventory`,
+  DISCOVER: `${SHOPKEEP}/discover`,
+  REQUESTS: `${SHOPKEEP}/requests`,
+  ORDERS: `${SHOPKEEP}/orders`,
+  SETTINGS: `${SHOPKEEP}/settings`,
+  FAQ: `${SHOPKEEP}/faq`,
+};
+
+export const SUPPLIER_ROUTES = {
+  OVERVIEW: `${SUPPLIER}/overview`,
+  INVENTORY: `${SUPPLIER}/inventory`,
+  DISCOVER: `${SUPPLIER}/discover`,
+  REQUESTS: `${SUPPLIER}/requests`,
+  SETTINGS: `${SUPPLIER}/overview?settings=true`,
+  FAQ: `${SUPPLIER}/faq`,
 };
