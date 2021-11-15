@@ -29,9 +29,9 @@ test.describe('Supplier Navigation', () => {
     // Click the Settings link in the nav
     await page.click('button#Settings');
 
-    await page.waitForSelector('text=Account Email');
-    await page.waitForSelector('text=Disconnect Account');
-    await page.waitForSelector('text=Support Email');
+    await page.waitForSelector('text=Commission Rate');
+    await page.waitForSelector('text=Email address');
+    await page.waitForSelector('text=Logo & description');
 
     // Ensure that the URL is for the SUP settings page
     expect(page.url().includes(SUPPLIER_ROUTES.SETTINGS)).toBeTruthy();

@@ -21,6 +21,6 @@ export const SUPPLIER_ROUTES = {
   INVENTORY: `${SUPPLIER}/inventory`,
   DISCOVER: `${SUPPLIER}/discover`,
   REQUESTS: `${SUPPLIER}/requests`,
-  SETTINGS: `${SUPPLIER}/overview?settings=true`,
+  SETTINGS: `${SUPPLIER}/settings`,
   FAQ: `${SUPPLIER}/faq`,
 };
