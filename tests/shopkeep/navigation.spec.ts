@@ -9,9 +9,9 @@ import { SHOPKEEP_ROUTES } from '../../helpers/routes';
 
 test.describe('Shopkeep Navigation', () => {
   /**
-   * We need to be logged in for each test, so we should log in before each one.
+   * We need to be logged in for each test, so we should log in before this test suite runs
    */
-  test.beforeEach(async ({ page }) => {
+  test.beforeAll(async ({ page }) => {
     await logInSuccessfully(page);
   });
 
