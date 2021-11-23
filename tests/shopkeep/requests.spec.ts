@@ -25,7 +25,7 @@ test.describe('Shopkeep Requests', () => {
     expect(page.url().includes(SHOPKEEP_ROUTES.REQUESTS)).toBeTruthy();
 
     // Wait for the request data to load before continuing
-    await page.waitForSelector('text=Showing 2 product requests');
+    await page.waitForLoadState('networkidle');
   });
 
   test.afterEach(async ({ context }) => {

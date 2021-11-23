@@ -11,6 +11,8 @@ test.describe('Shopkeep Inventory Management', () => {
    */
   test.beforeEach(async ({ context, page }) => {
     await logInSuccessfully(page, context, test);
+
+    await page.waitForLoadState('networkidle');
   });
 
   /**
