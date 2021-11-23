@@ -28,15 +28,18 @@ export const logInSuccessfully = async (
   >,
 ): Promise<void> => {
   if (process.env.APP_TEST_PASSWORD) {
+    // Make sure browser is logged out before attempting to go through login flow
     await logout(context);
-    await page.goto(LOGIN_PAGE);
 
-    await page.waitForSelector('button#login');
+    // Navigate to login page and wait for login button to load
+    await page.goto(LOGIN_PAGE);
+    await page.waitForSelector(LOGIN_BUTTON_SELECTOR);
 
     // Fill out email and password
     await page.fill(LOGIN_EMAIL_INPUT_SELECTOR, E2E_ACCOUNT_LOGIN);
     await page.fill(LOGIN_PASSWORD_INPUT_SELECTOR, process.env.APP_TEST_PASSWORD || '');
 
+    // Then click the login button
     await page.click(LOGIN_BUTTON_SELECTOR);
 
     // Wait 10 seconds to give time for the next page to load
