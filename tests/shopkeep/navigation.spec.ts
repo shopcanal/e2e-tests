@@ -9,10 +9,10 @@ import { SHOPKEEP_ROUTES } from '../../helpers/routes';
 
 test.describe('Shopkeep Navigation', () => {
   /**
-   * We need to be logged in for each test, so we should log in before this test suite runs
+   * We need to be logged in for each test, so we should log in before this test suite runs.
    */
-  test.beforeAll(async ({ page }) => {
-    await logInSuccessfully(page);
+  test.beforeEach(async ({ context, page }) => {
+    await logInSuccessfully(page, context);
   });
 
   test('can navigate successfully to the Inventory page from the Overview tab', async ({

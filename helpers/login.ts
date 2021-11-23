@@ -1,4 +1,4 @@
-import type { Page } from '@playwright/test';
+import type { BrowserContext, Page } from '@playwright/test';
 import { expect } from '@playwright/test';
 import { LOGIN_PAGE, SHOPKEEP_ROUTES } from './routes';
 
@@ -11,8 +11,9 @@ export const LOGIN_BUTTON_SELECTOR = 'button#login';
 
 const E2E_ACCOUNT_LOGIN = 'e2e_tester@shopcanal.com';
 
-export const logInSuccessfully = async (page: Page): Promise<void> => {
+export const logInSuccessfully = async (page: Page, context: BrowserContext): Promise<void> => {
   if (process.env.APP_TEST_PASSWORD) {
+    await logout(context);
     await page.goto(LOGIN_PAGE);
 
     // Fill out email and password
@@ -31,4 +32,8 @@ export const logInSuccessfully = async (page: Page): Promise<void> => {
     console.warn('Could not log in because no APP_TEST_PASSWORD was provided. Failing test.');
     expect(true).toBe(false);
   }
+};
+
+const logout = async (context: BrowserContext): Promise<void> => {
+  await context.clearCookies();
 };

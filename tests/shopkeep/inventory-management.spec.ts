@@ -7,10 +7,10 @@ import { logInSuccessfully } from '../../helpers/login';
  */
 test.describe('Shopkeep Inventory Management', () => {
   /**
-   * We need to be logged in for each test, so we should log in before each one.
+   * We need to be logged in for each test, so we should log in before this test suite runs.
    */
-  test.beforeEach(async ({ page }) => {
-    await logInSuccessfully(page);
+  test.beforeEach(async ({ context, page }) => {
+    await logInSuccessfully(page, context);
   });
 
   /**
