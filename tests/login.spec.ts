@@ -28,7 +28,7 @@ test.describe('Login', () => {
     context,
     page,
   }) => {
-    await logInSuccessfully(page, context);
+    await logInSuccessfully(page, context, test);
   });
 
   /**

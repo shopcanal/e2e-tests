@@ -12,7 +12,7 @@ test.describe('Shopkeep Navigation', () => {
    * We need to be logged in for each test, so we should log in before this test suite runs.
    */
   test.beforeEach(async ({ context, page }) => {
-    await logInSuccessfully(page, context);
+    await logInSuccessfully(page, context, test);
   });
 
   test.afterEach(async ({ context }) => {
@@ -70,7 +70,7 @@ test.describe('Shopkeep Navigation', () => {
     // Click the Orders link in the nav
     await page.click('#navOrders');
 
-    await page.waitForSelector('text=Orders');
+    await page.waitForSelector("text=This is where you'll see your Orders");
 
     // Ensure that the URL is for the SK orders page
     expect(page.url().includes(SHOPKEEP_ROUTES.ORDERS)).toBeTruthy();
