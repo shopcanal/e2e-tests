@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { logInSuccessfully } from '../../helpers/login';
+import { logInSuccessfully, logout } from '../../helpers/login';
 import { SHOPKEEP_ROUTES } from '../../helpers/routes';
 
 /**
@@ -13,6 +13,10 @@ test.describe('Shopkeep Navigation', () => {
    */
   test.beforeEach(async ({ context, page }) => {
     await logInSuccessfully(page, context);
+  });
+
+  test.afterEach(async ({ context }) => {
+    await logout(context);
   });
 
   test('can navigate successfully to the Inventory page from the Overview tab', async ({

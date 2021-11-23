@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { logInSuccessfully } from '../../helpers/login';
+import { logInSuccessfully, logout } from '../../helpers/login';
 import { SUPPLIER_ROUTES } from '../../helpers/routes';
 
 /**
@@ -16,6 +16,10 @@ test.describe('Supplier Navigation', () => {
 
     // Navigate to the overview page of the Supplier app
     await page.goto(SUPPLIER_ROUTES.OVERVIEW);
+  });
+
+  test.afterEach(async ({ context }) => {
+    await logout(context);
   });
 
   test('renders the SUP Overview page', async ({ page }) => {

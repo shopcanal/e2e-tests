@@ -34,6 +34,6 @@ export const logInSuccessfully = async (page: Page, context: BrowserContext): Pr
   }
 };
 
-const logout = async (context: BrowserContext): Promise<void> => {
+export const logout = async (context: BrowserContext): Promise<void> => {
   await context.clearCookies();
 };
