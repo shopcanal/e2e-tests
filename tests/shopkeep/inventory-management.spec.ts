@@ -11,6 +11,9 @@ test.describe('Shopkeep Inventory Management', () => {
    */
   test.beforeEach(async ({ context, page }) => {
     await logInSuccessfully(page, context, test);
+
+    // Wait 10 seconds to give time for the page to load
+    await page.waitForTimeout(10000);
   });
 
   /**
