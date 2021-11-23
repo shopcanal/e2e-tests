@@ -11,8 +11,8 @@ test.describe('Shopkeep Discover', () => {
    * We need to be logged in for each test, so we should log in before each one
    * and then navigate to the Discover page
    */
-  test.beforeEach(async ({ page }) => {
-    await logInSuccessfully(page);
+  test.beforeEach(async ({ context, page }) => {
+    await logInSuccessfully(page, context);
     await page.goto(SHOPKEEP_ROUTES.DISCOVER);
 
     expect(page.url().includes(SHOPKEEP_ROUTES.DISCOVER)).toBeTruthy();

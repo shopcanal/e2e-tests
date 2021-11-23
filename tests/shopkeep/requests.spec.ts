@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { logInSuccessfully } from '../../helpers/login';
+import { logInSuccessfully, logout } from '../../helpers/login';
 import { SHOPKEEP_ROUTES } from '../../helpers/routes';
 
 /**
@@ -18,14 +18,18 @@ test.describe('Shopkeep Requests', () => {
    * We need to be logged in for each test, so we should log in before each one
    * and then navigate to the Discover page
    */
-  test.beforeEach(async ({ page }) => {
-    await logInSuccessfully(page);
+  test.beforeEach(async ({ context, page }) => {
+    await logInSuccessfully(page, context);
     await page.goto(SHOPKEEP_ROUTES.REQUESTS);
 
     expect(page.url().includes(SHOPKEEP_ROUTES.REQUESTS)).toBeTruthy();
 
     // Wait for the request data to load before continuing
     await page.waitForSelector('text=Showing 2 product requests');
+  });
+
+  test.afterEach(async ({ context }) => {
+    await logout(context);
   });
 
   test('displays two requests and tabs for filtering requests by status', async ({ page }) => {

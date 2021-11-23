@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { logInSuccessfully } from '../../helpers/login';
+import { logInSuccessfully, logout } from '../../helpers/login';
 import { SUPPLIER_ROUTES } from '../../helpers/routes';
 
 /**
@@ -9,16 +9,23 @@ import { SUPPLIER_ROUTES } from '../../helpers/routes';
 
 test.describe('Supplier Navigation', () => {
   /**
-   * We need to be logged in for each test, so we should log in before each one.
+   * We need to be logged in for each test, so we should log in before this test suite runs.
    */
-  test.beforeEach(async ({ page }) => {
-    await logInSuccessfully(page);
+  test.beforeEach(async ({ page, context }) => {
+    await logInSuccessfully(page, context);
 
     // Navigate to the overview page of the Supplier app
     await page.goto(SUPPLIER_ROUTES.OVERVIEW);
   });
 
+  test.afterEach(async ({ context }) => {
+    await logout(context);
+  });
+
   test('renders the SUP Overview page', async ({ page }) => {
+    // Click the Overview link in the nav
+    await page.click('button#Overview');
+
     await page.waitForSelector('text=Welcome to Canal');
     await page.waitForSelector('text=The status of products listed on Canal is shown here.');
     await page.waitForSelector('text=The percentage of each sale your storefront partners keep.');

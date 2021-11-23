@@ -24,8 +24,11 @@ test.describe('Login', () => {
    * Tests that the user can fill out the email and password inputs, then
    * click login and be redirected to the app
    */
-  test('can fill out valid email and password and successfully log in', async ({ page }) => {
-    await logInSuccessfully(page);
+  test('can fill out valid email and password and successfully log in', async ({
+    context,
+    page,
+  }) => {
+    await logInSuccessfully(page, context);
   });
 
   /**
