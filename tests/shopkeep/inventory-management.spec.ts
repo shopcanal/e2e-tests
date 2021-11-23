@@ -10,7 +10,7 @@ test.describe('Shopkeep Inventory Management', () => {
    * We need to be logged in for each test, so we should log in before this test suite runs.
    */
   test.beforeEach(async ({ context, page }) => {
-    await logInSuccessfully(page, context);
+    await logInSuccessfully(page, context, test);
   });
 
   /**

@@ -19,7 +19,7 @@ test.describe('Shopkeep Requests', () => {
    * and then navigate to the Discover page
    */
   test.beforeEach(async ({ context, page }) => {
-    await logInSuccessfully(page, context);
+    await logInSuccessfully(page, context, test);
     await page.goto(SHOPKEEP_ROUTES.REQUESTS);
 
     expect(page.url().includes(SHOPKEEP_ROUTES.REQUESTS)).toBeTruthy();
