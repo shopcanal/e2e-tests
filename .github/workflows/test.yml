@@ -8,7 +8,7 @@ jobs:
     strategy:
       matrix:
         # Each of these are browser names we want to run tests against in parallel
-        browser: ['chromium', 'firefox', 'webkit']
+        browser: ['chromium', 'webkit']
     steps:
       - uses: actions/checkout@v2
 
