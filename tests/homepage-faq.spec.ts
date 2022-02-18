@@ -19,7 +19,7 @@ const FAQ_TEXT = [
 ];
 
 // The element that has "Canal helps D2C brands" within it and is a collapsible element
-const COLLAPSIBLE_SELECTOR = '#basic-collapsible:has(:text("Canal helps D2C brands"))';
+const COLLAPSIBLE_SELECTOR = ':text("Canal helps D2C brands")';
 
 test('Has all FAQs', async ({ page }) => {
   await page.goto(MAIN_SITE);
