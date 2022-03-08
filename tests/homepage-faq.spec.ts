@@ -27,7 +27,7 @@ test('Has all FAQs', async ({ page }) => {
 
   // Captures the parent of the dropdown containers that have inside of them button + basic collapsible elements
   for (const item of FAQ_TEXT) {
-    const selector = `button:has(:text('${item}'))`;
+    const selector = `button:has(:text("${item}"))`;
     const faq = await page.waitForSelector(selector, {
       state: 'attached',
     });
