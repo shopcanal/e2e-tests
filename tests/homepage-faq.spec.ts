@@ -15,7 +15,8 @@ const FAQ_TEXT = [
   'How do you make money?',
   'How does Canal make money?',
   'When will I be able to use Canal?',
-  'How do Storefronts handle shipping?',
+  'What is the Canal Network?',
+  "How do I access Canal's network of brands?",
 ];
 
 // The element that has "Canal helps D2C brands" within it and is a collapsible element
@@ -26,7 +27,7 @@ test('Has all FAQs', async ({ page }) => {
 
   // Captures the parent of the dropdown containers that have inside of them button + basic collapsible elements
   for (const item of FAQ_TEXT) {
-    const selector = `button:has(:text('${item}'))`;
+    const selector = `button:has(:text("${item}"))`;
     const faq = await page.waitForSelector(selector, {
       state: 'attached',
     });
