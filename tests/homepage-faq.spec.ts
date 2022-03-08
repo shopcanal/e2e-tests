@@ -15,7 +15,8 @@ const FAQ_TEXT = [
   'How do you make money?',
   'How does Canal make money?',
   'When will I be able to use Canal?',
-  'How do Storefronts handle shipping?',
+  'What is the Canal Network?',
+  "How do I access Canal's network of brands?",
 ];
 
 // The element that has "Canal helps D2C brands" within it and is a collapsible element
