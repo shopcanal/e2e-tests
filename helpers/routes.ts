@@ -7,6 +7,12 @@ const SUPPLIER = `${DOMAIN}/supplier`;
  */
 export const LOGIN_PAGE = `${DOMAIN}/login`;
 
+/**
+ * This must match the "App Url" setting of our Shopify App in order to test the
+ * userflow of embedded users.
+ */
+export const SK_APP_URL = `${DOMAIN}/shopkeep/inventory?embedded=true&canal_app_name=storefront`;
+
 export const SHOPKEEP_ROUTES = {
   INVENTORY: `${SHOPKEEP}/inventory`,
   DISCOVER: `${SHOPKEEP}/discover`,
