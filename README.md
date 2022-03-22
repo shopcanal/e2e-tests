@@ -33,7 +33,7 @@ https://playwright.dev/docs/test-intro/ for more information about how it functi
 
 ### Running tests manually
 
-Use `yarn test` to run all tests, or `yarn test tests/x` to run test `x.spec.ts` in the tests folder. You can add
+Use `yarn test` to run all tests, or `yarn tests.specific tests/x` to run test `x.spec.ts` in the tests folder. You can add
 as many tests to run as you want instead of running all them. Running all tests on all browsers can be done with
 `yarn test.all`.
 
