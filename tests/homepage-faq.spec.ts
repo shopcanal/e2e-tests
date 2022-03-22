@@ -42,9 +42,7 @@ test('Has all FAQs', async ({ page }) => {
   }
 });
 
-test('First FAQ dropdown can be clicked on', async ({ page, browserName }) => {
-  test.skip(browserName === 'webkit', 'Flaky test on webkit - skipping for now');
-
+test('First FAQ dropdown can be clicked on', async ({ page }) => {
   const expandedState = () => page.getAttribute(COLLAPSIBLE_SELECTOR, 'aria-expanded');
 
   const height = async (state: 'attached' | 'visible') => {
