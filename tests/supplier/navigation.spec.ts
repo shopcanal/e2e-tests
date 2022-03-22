@@ -1,4 +1,4 @@
-import { test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 import { logInSuccessfully, logout } from '../../helpers/login';
 import { SUPPLIER_ROUTES } from '../../helpers/routes';
 
@@ -23,65 +23,65 @@ test.describe('Supplier Navigation', () => {
     await logout(context);
   });
 
-  // test('renders the SUP Overview page', async ({ page }) => {
-  //   await page.waitForSelector('text=Welcome to Canal');
-  //   await page.waitForSelector('text=The status of products listed on Canal is shown here.');
-  //   await page.waitForSelector('text=The percentage of each sale your storefront partners keep.');
-  //   await page.waitForSelector("text=View Canal's terms and conditions here at any time.");
-  // });
+  test('renders the SUP Overview page', async ({ page }) => {
+    await page.waitForSelector('text=Welcome to Canal');
+    await page.waitForSelector('text=The status of products listed on Canal is shown here.');
+    await page.waitForSelector('text=The percentage of each sale your storefront partners keep.');
+    await page.waitForSelector("text=View Canal's terms and conditions here at any time.");
+  });
 
-  // test('can navigate successfully to the Settings page from the Settings tab', async ({ page }) => {
-  //   // Click the Settings link in the nav
-  //   await page.click('button#Settings');
+  test('can navigate successfully to the Settings page from the Settings tab', async ({ page }) => {
+    // Click the Settings link in the nav
+    await page.click('button#Settings');
 
-  //   await page.waitForSelector('text=Commission Rate');
-  //   await page.waitForSelector('text=Email address');
-  //   await page.waitForSelector('text=Logo & description');
+    await page.waitForSelector('text=Commission Rate');
+    await page.waitForSelector('text=Email address');
+    await page.waitForSelector('text=Logo & description');
 
-  //   // Ensure that the URL is for the SUP settings page
-  //   expect(page.url().includes(SUPPLIER_ROUTES.SETTINGS)).toBeTruthy();
-  // });
+    // Ensure that the URL is for the SUP settings page
+    expect(page.url().includes(SUPPLIER_ROUTES.SETTINGS)).toBeTruthy();
+  });
 
-  // test('can navigate successfully to the Inventory page from the Inventory tab', async ({
-  //   page,
-  // }) => {
-  //   // Click the Inventory link in the nav
-  //   await page.click('button#Inventory');
+  test('can navigate successfully to the Inventory page from the Inventory tab', async ({
+    page,
+  }) => {
+    // Click the Inventory link in the nav
+    await page.click('button#Inventory');
 
-  //   await page.waitForSelector(
-  //     'text=These products are available on Canal so storefronts can request to sell.',
-  //   );
-  //   await page.waitForSelector(
-  //     'text=Add unlisted products to Canal so storefronts can request to sell.',
-  //   );
+    await page.waitForSelector(
+      'text=These products are available on Canal so storefronts can request to sell.',
+    );
+    await page.waitForSelector(
+      'text=Add unlisted products to Canal so storefronts can request to sell.',
+    );
 
-  //   // Ensure that the URL is for the SUP inventory page
-  //   expect(page.url().includes(SUPPLIER_ROUTES.INVENTORY)).toBeTruthy();
-  // });
+    // Ensure that the URL is for the SUP inventory page
+    expect(page.url().includes(SUPPLIER_ROUTES.INVENTORY)).toBeTruthy();
+  });
 
-  // test('can navigate successfully to the Discover page from the Discover tab', async ({ page }) => {
-  //   // Click the Discover link in the nav
-  //   await page.click('button#Discover');
+  test('can navigate successfully to the Discover page from the Discover tab', async ({ page }) => {
+    // Click the Discover link in the nav
+    await page.click('button#Discover');
 
-  //   await page.waitForSelector(
-  //     "text=Pre-approve storefronts so that they don't need to request. You can choose which products to approve.",
-  //   );
+    await page.waitForSelector(
+      "text=Pre-approve storefronts so that they don't need to request. You can choose which products to approve.",
+    );
 
-  //   // Ensure that the URL is for the SUP discover page
-  //   expect(page.url().includes(SUPPLIER_ROUTES.DISCOVER)).toBeTruthy();
-  // });
+    // Ensure that the URL is for the SUP discover page
+    expect(page.url().includes(SUPPLIER_ROUTES.DISCOVER)).toBeTruthy();
+  });
 
-  // test('can navigate successfully to the Requests page from the Requests tab', async ({ page }) => {
-  //   // Click the Requests link in the nav
-  //   await page.click('button#Requests');
+  test('can navigate successfully to the Requests page from the Requests tab', async ({ page }) => {
+    // Click the Requests link in the nav
+    await page.click('button#Requests');
 
-  //   // Expect to see the four tabs for filtering requests
-  //   await page.waitForSelector('button#All-requests-tab');
-  //   await page.waitForSelector('button#Approved-requests-tab');
-  //   await page.waitForSelector('button#Pending-requests-tab');
-  //   await page.waitForSelector('button#Rejected-requests-tab');
+    // Expect to see the four tabs for filtering requests
+    await page.waitForSelector('button#All-requests-tab');
+    await page.waitForSelector('button#Approved-requests-tab');
+    await page.waitForSelector('button#Pending-requests-tab');
+    await page.waitForSelector('button#Rejected-requests-tab');
 
-  //   // Ensure that the URL is for the SUP Requests page
-  //   expect(page.url().includes(SUPPLIER_ROUTES.REQUESTS)).toBeTruthy();
-  // });
+    // Ensure that the URL is for the SUP Requests page
+    expect(page.url().includes(SUPPLIER_ROUTES.REQUESTS)).toBeTruthy();
+  });
 });
