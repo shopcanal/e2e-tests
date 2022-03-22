@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { logInSuccessfully } from '../../helpers/login';
+import { logIntoShopkeep } from '../../helpers/login';
 
 /**
  * This file contains tests that confirm we can add and modify Shopify products
@@ -10,8 +10,7 @@ test.describe('Shopkeep Inventory Management', () => {
    * We need to be logged in for each test, so we should log in before this test suite runs.
    */
   test.beforeEach(async ({ context, page }) => {
-    await logInSuccessfully(page, context, test);
-
+    await logIntoShopkeep(page, context);
     await page.waitForLoadState('networkidle');
   });
 

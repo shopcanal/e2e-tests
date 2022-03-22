@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { logInSuccessfully, logout } from '../../helpers/login';
+import { logIntoShopkeep, logout } from '../../helpers/login';
 import { SHOPKEEP_ROUTES } from '../../helpers/routes';
 
 /**
@@ -19,7 +19,7 @@ test.describe('Shopkeep Requests', () => {
    * and then navigate to the Discover page
    */
   test.beforeEach(async ({ context, page }) => {
-    await logInSuccessfully(page, context, test);
+    await logIntoShopkeep(page, context);
     await page.goto(SHOPKEEP_ROUTES.REQUESTS);
 
     expect(page.url().includes(SHOPKEEP_ROUTES.REQUESTS)).toBeTruthy();

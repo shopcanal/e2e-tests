@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { logInSuccessfully, logout } from '../../helpers/login';
+import { logIntoShopkeep, logout } from '../../helpers/login';
 import { SHOPKEEP_ROUTES } from '../../helpers/routes';
 
 /**
@@ -12,7 +12,8 @@ test.describe('Shopkeep Navigation', () => {
    * We need to be logged in for each test, so we should log in before this test suite runs.
    */
   test.beforeEach(async ({ context, page }) => {
-    await logInSuccessfully(page, context, test);
+    await logIntoShopkeep(page, context);
+    await page.waitForLoadState('networkidle');
   });
 
   test.afterEach(async ({ context }) => {

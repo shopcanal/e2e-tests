@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { logInSuccessfully, logout } from '../../helpers/login';
+import { logIntoSupplier, logout } from '../../helpers/login';
 import { SUPPLIER_ROUTES } from '../../helpers/routes';
 
 /**
@@ -12,11 +12,12 @@ test.describe('Supplier Navigation', () => {
    * We need to be logged in for each test, so we should log in before this test suite runs.
    */
   test.beforeEach(async ({ page, context }) => {
-    await logInSuccessfully(page, context, test);
+    await logIntoSupplier(page, context);
 
     // Navigate to the overview page of the Supplier app
     await page.goto(SUPPLIER_ROUTES.OVERVIEW);
     await page.waitForSelector('text=Welcome to Canal');
+    await page.waitForLoadState('networkidle');
   });
 
   test.afterEach(async ({ context }) => {

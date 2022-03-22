@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 import {
-  logInSuccessfully,
+  logIntoShopkeep,
   LOGIN_BUTTON_SELECTOR,
   LOGIN_EMAIL_INPUT_SELECTOR,
   LOGIN_PASSWORD_INPUT_SELECTOR,
@@ -18,6 +18,7 @@ test.describe('Login', () => {
    */
   test.beforeEach(async ({ page }) => {
     await page.goto(LOGIN_PAGE);
+    await page.waitForLoadState('networkidle');
   });
 
   /**
@@ -28,7 +29,7 @@ test.describe('Login', () => {
     context,
     page,
   }) => {
-    await logInSuccessfully(page, context, test);
+    await logIntoShopkeep(page, context);
   });
 
   /**
