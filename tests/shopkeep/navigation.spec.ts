@@ -26,7 +26,8 @@ test.describe('Shopkeep Navigation', () => {
     // Click the Overview link in the nav
     await page.click('#navOverview');
 
-    await page.waitForSelector('text=Inventory');
+    const locator = page.locator('text=Inventory');
+    await locator.waitFor();
 
     // Ensure that the URL is for the SK inventory page
     expect(page.url().includes(SHOPKEEP_ROUTES.INVENTORY)).toBeTruthy();
@@ -36,7 +37,8 @@ test.describe('Shopkeep Navigation', () => {
     // Click the Discover link in the nav
     await page.click('#navDiscover');
 
-    await page.waitForSelector('text=Discover');
+    const locator = page.locator('text=Discover');
+    await locator.waitFor();
 
     // Ensure that the URL is for the SK discover page
     expect(page.url().includes(SHOPKEEP_ROUTES.DISCOVER)).toBeTruthy();
@@ -46,7 +48,8 @@ test.describe('Shopkeep Navigation', () => {
     // Click the Requests link in the nav
     await page.click('#navRequests');
 
-    await page.waitForSelector('text=Requests');
+    const locator = page.locator('text=Requests');
+    await locator.waitFor();
 
     // Ensure that the URL is for the SK requests page
     expect(page.url().includes(SHOPKEEP_ROUTES.REQUESTS)).toBeTruthy();
@@ -56,7 +59,8 @@ test.describe('Shopkeep Navigation', () => {
     // Click the Orders link in the nav
     await page.click('#navOrders');
 
-    await page.waitForSelector("text=This is where you'll see your Orders");
+    const locator = page.locator("text=This is where you'll see your Orders");
+    await locator.waitFor();
 
     // Ensure that the URL is for the SK orders page
     expect(page.url().includes(SHOPKEEP_ROUTES.ORDERS)).toBeTruthy();
@@ -66,7 +70,8 @@ test.describe('Shopkeep Navigation', () => {
     // Click the Settings link in the nav
     await page.click('#navSettings');
 
-    await page.waitForSelector('text=Email address');
+    const locator = page.locator('text=Email address');
+    await locator.waitFor();
 
     // Ensure that the URL is for the SK settings page
     expect(page.url()).toBe(SHOPKEEP_ROUTES.SETTINGS);
@@ -76,7 +81,8 @@ test.describe('Shopkeep Navigation', () => {
     // Click the FAQ link in the nav
     await page.click('#navFAQ');
 
-    await page.waitForSelector('text=Frequently Asked Questions');
+    const locator = page.locator('text=Frequently Asked Questions');
+    await locator.waitFor();
 
     // Ensure that the URL is for the SK FAQ page
     expect(page.url()).toBe(SHOPKEEP_ROUTES.FAQ);

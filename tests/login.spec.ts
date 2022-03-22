@@ -45,7 +45,8 @@ test.describe('Login', () => {
     await page.click(LOGIN_BUTTON_SELECTOR);
 
     // Wait for the error to display
-    await page.waitForSelector('text=Failed to log in');
+    const locator = page.locator('text=Failed to log in');
+    await locator.waitFor();
 
     // Ensure that the URL is still the login page
     expect(page.url()).toBe(LOGIN_PAGE);

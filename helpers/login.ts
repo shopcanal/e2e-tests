@@ -25,7 +25,8 @@ const logIn = async (
 
     // Navigate to login page and wait for login button to load
     await page.goto(LOGIN_PAGE);
-    await page.waitForSelector(LOGIN_BUTTON_SELECTOR);
+    const locator = page.locator(LOGIN_BUTTON_SELECTOR);
+    await locator.waitFor();
 
     // Fill out email and password
     await page.fill(LOGIN_EMAIL_INPUT_SELECTOR, E2E_ACCOUNT_LOGIN);

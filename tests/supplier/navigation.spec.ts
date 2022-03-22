@@ -16,7 +16,8 @@ test.describe('Supplier Navigation', () => {
 
     // Navigate to the overview page of the Supplier app
     await page.goto(SUPPLIER_ROUTES.OVERVIEW);
-    await page.waitForSelector('text=Welcome to Canal');
+    const locator = page.locator('text=Welcome to Canal');
+    await locator.waitFor();
     await page.waitForLoadState('networkidle');
   });
 
@@ -25,19 +26,26 @@ test.describe('Supplier Navigation', () => {
   });
 
   test('renders the SUP Overview page', async ({ page }) => {
-    await page.waitForSelector('text=Welcome to Canal');
-    await page.waitForSelector('text=The status of products listed on Canal is shown here.');
-    await page.waitForSelector('text=The percentage of each sale your storefront partners keep.');
-    await page.waitForSelector("text=View Canal's terms and conditions here at any time.");
+    let locator = page.locator('text=Welcome to Canal');
+    await locator.waitFor();
+    locator = page.locator('text=The status of products listed on Canal is shown here.');
+    await locator.waitFor();
+    locator = page.locator('text=The percentage of each sale your storefront partners keep.');
+    await locator.waitFor();
+    locator = page.locator("text=View Canal's terms and conditions here at any time.");
+    await locator.waitFor();
   });
 
   test('can navigate successfully to the Settings page from the Settings tab', async ({ page }) => {
     // Click the Settings link in the nav
     await page.click('button#Settings');
 
-    await page.waitForSelector('text=Commission Rate');
-    await page.waitForSelector('text=Email address');
-    await page.waitForSelector('text=Logo & description');
+    let locator = page.locator('text=Commission Rate');
+    await locator.waitFor();
+    locator = page.locator('text=Email address');
+    await locator.waitFor();
+    locator = page.locator('text=Logo & description');
+    await locator.waitFor();
 
     // Ensure that the URL is for the SUP settings page
     expect(page.url().includes(SUPPLIER_ROUTES.SETTINGS)).toBeTruthy();
@@ -49,12 +57,14 @@ test.describe('Supplier Navigation', () => {
     // Click the Inventory link in the nav
     await page.click('button#Inventory');
 
-    await page.waitForSelector(
+    let locator = page.locator(
       'text=These products are available on Canal so storefronts can request to sell.',
     );
-    await page.waitForSelector(
+    await locator.waitFor();
+    locator = page.locator(
       'text=Add unlisted products to Canal so storefronts can request to sell.',
     );
+    await locator.waitFor();
 
     // Ensure that the URL is for the SUP inventory page
     expect(page.url().includes(SUPPLIER_ROUTES.INVENTORY)).toBeTruthy();
@@ -64,9 +74,10 @@ test.describe('Supplier Navigation', () => {
     // Click the Discover link in the nav
     await page.click('button#Discover');
 
-    await page.waitForSelector(
+    const locator = page.locator(
       "text=Pre-approve storefronts so that they don't need to request. You can choose which products to approve.",
     );
+    await locator.waitFor();
 
     // Ensure that the URL is for the SUP discover page
     expect(page.url().includes(SUPPLIER_ROUTES.DISCOVER)).toBeTruthy();
@@ -77,10 +88,14 @@ test.describe('Supplier Navigation', () => {
     await page.click('button#Requests');
 
     // Expect to see the four tabs for filtering requests
-    await page.waitForSelector('button#All-requests-tab');
-    await page.waitForSelector('button#Approved-requests-tab');
-    await page.waitForSelector('button#Pending-requests-tab');
-    await page.waitForSelector('button#Rejected-requests-tab');
+    let locator = page.locator('button#All-requests-tab');
+    await locator.waitFor();
+    locator = page.locator('button#Approved-requests-tab');
+    await locator.waitFor();
+    locator = page.locator('button#Pending-requests-tab');
+    await locator.waitFor();
+    locator = page.locator('button#Rejected-requests-tab');
+    await locator.waitFor();
 
     // Ensure that the URL is for the SUP Requests page
     expect(page.url().includes(SUPPLIER_ROUTES.REQUESTS)).toBeTruthy();

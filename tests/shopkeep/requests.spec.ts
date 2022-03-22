@@ -38,10 +38,14 @@ test.describe('Shopkeep Requests', () => {
     expect(requestLineItems.length).toBe(2);
 
     // Check that we have all four filtering buttons - All, Approved, Pending, Rejected
-    await page.waitForSelector(ALL_TAB_SELECTOR);
-    await page.waitForSelector(APPROVED_TAB_SELECTOR);
-    await page.waitForSelector(PENDING_TAB_SELECTOR);
-    await page.waitForSelector(REJECTED_TAB_SELECTOR);
+    let locator = page.locator(ALL_TAB_SELECTOR);
+    await locator.waitFor();
+    locator = page.locator(APPROVED_TAB_SELECTOR);
+    await locator.waitFor();
+    locator = page.locator(PENDING_TAB_SELECTOR);
+    await locator.waitFor();
+    locator = page.locator(REJECTED_TAB_SELECTOR);
+    await locator.waitFor();
   });
 
   test('clicking the Pending tab shows only one pending request', async ({ page }) => {
@@ -49,7 +53,8 @@ test.describe('Shopkeep Requests', () => {
     await page.click(PENDING_TAB_SELECTOR);
 
     // Wait for the request data to load before continuing
-    await page.waitForSelector('text=Showing 1 product request');
+    const locator = page.locator('text=Showing 1 product request');
+    await locator.waitFor();
 
     // Check that there is one list item
     const requestLineItems = await page.$$(LIST_ITEM_SELECTOR);
@@ -61,7 +66,8 @@ test.describe('Shopkeep Requests', () => {
   }) => {
     // Click the "Rejected" tab and wait for the empty state to appear
     await page.click(REJECTED_TAB_SELECTOR);
-    await page.waitForSelector("text=This is where you'll view your requests");
+    let locator = page.locator("text=This is where you'll view your requests");
+    await locator.waitFor();
 
     // Check that there are no list items
     let requestLineItems = await page.$$(LIST_ITEM_SELECTOR);
@@ -69,7 +75,8 @@ test.describe('Shopkeep Requests', () => {
 
     // Click the "All" tab
     await page.click(ALL_TAB_SELECTOR);
-    await page.waitForSelector('text=Showing 2 product requests');
+    locator = page.locator('text=Showing 2 product requests');
+    await locator.waitFor();
 
     // Check that there are two list items
     requestLineItems = await page.$$(LIST_ITEM_SELECTOR);

@@ -22,7 +22,8 @@ test.describe('Shopkeep Inventory Management', () => {
     await page.click('text=Activate');
 
     // Wait for the product management modal to display
-    await page.waitForSelector('text=Manage product');
+    const locator = page.locator('text=Manage product');
+    await locator.waitFor();
 
     // We expect the 'Save' button to be disabled
     let button = await page.$('button#save-product-status-button');
@@ -46,7 +47,8 @@ test.describe('Shopkeep Inventory Management', () => {
     await page.click('text=Add to Shopify as Draft');
 
     // Wait for the payment information modal to display
-    await page.waitForSelector('text=Provide payment information to proceed');
+    const locator = page.locator('text=Provide payment information to proceed');
+    await locator.waitFor();
 
     // Expect the 'Save & Agree' button to be disabled
     let button = await page.$('text=Save & Agree');
