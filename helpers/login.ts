@@ -33,7 +33,7 @@ const logIn = async (
     await page.fill(LOGIN_PASSWORD_INPUT_SELECTOR, process.env.APP_TEST_PASSWORD || '');
 
     // Then click the login button
-    await page.click(LOGIN_BUTTON_SELECTOR);
+    await locator.click();
     await page.waitForURL(firstLoggedInPageUrl);
   } else {
     console.warn('Could not log in because no APP_TEST_PASSWORD was provided. Failing test.');

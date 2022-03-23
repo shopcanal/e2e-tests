@@ -14,12 +14,12 @@ export const LOGIN_PAGE = `${DOMAIN}/login`;
 export const SK_APP_URL = `${DOMAIN}/shopkeep/inventory?embedded=true&canal_app_name=storefront`;
 
 export const SHOPKEEP_ROUTES = {
-  INVENTORY: `${SHOPKEEP}/inventory`,
   DISCOVER: `${SHOPKEEP}/discover`,
-  REQUESTS: `${SHOPKEEP}/requests`,
-  ORDERS: `${SHOPKEEP}/orders`,
+  INVENTORY: `${SHOPKEEP}/inventory`,
+  SUPPLIERS: `${SHOPKEEP}/suppliers`,
+  PROPOSALS: `${SHOPKEEP}/proposals`,
+  INVITE: `${SHOPKEEP}/invite`,
   SETTINGS: `${SHOPKEEP}/settings`,
-  FAQ: `${SHOPKEEP}/faq`,
 };
 
 export const SUPPLIER_ROUTES = {

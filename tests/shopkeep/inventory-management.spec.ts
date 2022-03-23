@@ -1,6 +1,8 @@
 import { expect, test } from '@playwright/test';
 import { logIntoShopkeep } from '../../helpers/login';
 
+test.describe.configure({ mode: 'parallel' });
+
 /**
  * This file contains tests that confirm we can add and modify Shopify products
  * from within the Canal app
@@ -19,22 +21,23 @@ test.describe('Shopkeep Inventory Management', () => {
    */
   test('can open Manage Product modal and change product status to active', async ({ page }) => {
     // Click the 'Activate' button
-    await page.click('text=Activate');
+    const activate = page.locator('text=Activate');
+    await activate.click();
 
     // Wait for the product management modal to display
     const locator = page.locator('text=Manage product');
     await locator.waitFor();
 
     // We expect the 'Save' button to be disabled
-    let button = await page.$('button#save-product-status-button');
+    let button = page.locator('button#save-product-status-button');
     if (button) expect(await button.isDisabled()).toBeTruthy();
 
     // Select "Active" in the product status dropdown
-    const dropdown = await page.$('select#PolarisSelect1');
+    const dropdown = page.locator('select#PolarisSelect1');
     await dropdown?.selectOption('ACTIVE');
 
     // We expect the 'Save' button to be active now
-    button = await page.$('button#save-product-status-button');
+    button = page.locator('button#save-product-status-button');
     if (button) expect(await button.isDisabled()).toBeFalsy();
   });
 
@@ -43,15 +46,18 @@ test.describe('Shopkeep Inventory Management', () => {
    * as well as add a payment method
    */
   test('can successfully add a product to Shopify as a Draft', async ({ page }) => {
+    test.skip(true, '@TODO: needs to be updated');
+
     // Click the 'Add to Shopify as Draft' button
-    await page.click('text=Add to Shopify as Draft');
+    const addToShopify = page.locator('text=Add to Shopify as Draft');
+    await addToShopify.click();
 
     // Wait for the payment information modal to display
     const locator = page.locator('text=Provide payment information to proceed');
     await locator.waitFor();
 
     // Expect the 'Save & Agree' button to be disabled
-    let button = await page.$('text=Save & Agree');
+    let button = page.locator('text=Save & Agree');
     if (button) expect(await button.isDisabled()).toBeTruthy();
 
     // Enter test card number into the payment info iframe
@@ -64,7 +70,7 @@ test.describe('Shopkeep Inventory Management', () => {
       await iframe.fill('[aria-label="ZIP"]', '42424');
     }
 
-    button = await page.$('text=Save & Agree');
+    button = page.locator('text=Save & Agree');
     if (button) expect(await button.isDisabled()).toBeFalsy();
   });
 });

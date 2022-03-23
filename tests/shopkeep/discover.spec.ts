@@ -2,6 +2,8 @@ import { expect, test } from '@playwright/test';
 import { logIntoShopkeep } from '../../helpers/login';
 import { SHOPKEEP_ROUTES } from '../../helpers/routes';
 
+test.describe.configure({ mode: 'parallel' });
+
 /**
  * This file contains tests that verify the Discover pages are working
  * as intended
