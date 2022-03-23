@@ -1,5 +1,7 @@
 import { expect, test } from '@playwright/test';
 
+test.describe.configure({ mode: 'parallel' });
+
 /**
  * This file contains tests that confirm our main dev site, https://develop.shopcanal.com, has an
  * FAQ section that's working as expected. Checks each FAQ text for visibility and makes
@@ -20,47 +22,40 @@ const FAQ_TEXT = [
 ];
 
 // The element that shows up when we click on an FAQ element has the class react-reveal, so it should be hidden to start with, then show up when clicked
-const EXPANDED_SELECTOR = `:below(text=${FAQ_TEXT[0]}) .react-reveal`;
-
 test('Has all FAQs', async ({ page }) => {
   await page.goto(MAIN_SITE);
 
-  // Captures the parent of the dropdown containers that have inside of them button + basic collapsible elements
+  // Makes sure each of the FAQs exist, but the collapsible items aren't yet visible
   for (const item of FAQ_TEXT) {
-    const selector = `button:has(:text("${item}"))`;
+    const selector = `button:has-text("${item}")`;
     const faq = page.locator(selector);
-    await faq.waitFor({
-      state: 'attached',
-    });
+    await faq.waitFor();
 
-    const collapsibleElement = page.locator(`:below(${selector})`);
-    await collapsibleElement.waitFor({ state: 'attached' });
-
-    // Make sure both the FAQ and the collapsible element exists
-    expect(faq).toBeTruthy();
+    // There's two, the second is the cookie banner
+    const collapsibleElement = page.locator(`.react-reveal:below(${selector}) >> nth=0`);
+    await collapsibleElement.waitFor({ state: 'detached' });
   }
 });
 
 test('First FAQ dropdown can be clicked on', async ({ page }) => {
-  const height = async () => {
-    const locator = page.locator(EXPANDED_SELECTOR);
-    await page.pause();
-    const box = await locator.boundingBox();
-    return box?.height ?? 0;
-  };
+  const faqText = page.locator(`button:has-text("${FAQ_TEXT[0]}")`);
+  // There's two, the second is the cookie banner
+  const collapsibleElement = page.locator(
+    `.react-reveal:below(button:has-text("${FAQ_TEXT[0]}")) >> nth=0`,
+  );
 
   await page.goto(MAIN_SITE);
 
-  // Starts out closed and minimized
-  expect(await height()).toBe(0);
+  // Starts out unattached in the DOM
+  await collapsibleElement.waitFor({ state: 'detached' });
 
   // Open the dropdown and wait till it's onscreen and the bounding box has stopped changing
-  await page.click(`text=${FAQ_TEXT[0]}`);
-  const locator = page.locator(EXPANDED_SELECTOR);
-  await locator.waitFor({
+  await faqText.click();
+  await collapsibleElement.waitFor({
     state: 'visible',
   });
 
-  // Ensure it's now visible and larger than 0
-  expect(await height()).toBeGreaterThan(0);
+  // Ensure it's now visible and height is larger than 0
+  const box = await collapsibleElement.boundingBox();
+  expect(box?.height).toBeGreaterThan(0);
 });

@@ -1,5 +1,7 @@
 import { expect, test } from '@playwright/test';
 
+test.describe.configure({ mode: 'parallel' });
+
 /**
  * This file contains tests that confirm our main site, https://shopcanal.com, is up and
  * running as intended. Just the basics.

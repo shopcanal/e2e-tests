@@ -12,6 +12,8 @@ const SCREENSHOTS: Record<string, string> = {
   terms: 'https://shopcanal.com/terms',
 };
 
+test.describe.configure({ mode: 'parallel' });
+
 test('Home - take screenshots', async ({ page }) => {
   for (const screenshotName of Object.keys(SCREENSHOTS)) {
     await page.goto(SCREENSHOTS[screenshotName]);

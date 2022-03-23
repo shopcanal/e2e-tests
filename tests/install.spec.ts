@@ -6,6 +6,8 @@
 import { expect, test } from '@playwright/test';
 import { SK_APP_URL } from '../helpers/routes';
 
+test.describe.configure({ mode: 'parallel' });
+
 const SHOPIFY_AUTH_URL_RE = /https:\/\/accounts.shopify.com\/lookup/;
 
 test.describe('Visit to the Shopify App Url', () => {

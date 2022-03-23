@@ -5,7 +5,9 @@ import {
   LOGIN_EMAIL_INPUT_SELECTOR,
   LOGIN_PASSWORD_INPUT_SELECTOR,
 } from '../helpers/login';
-import { LOGIN_PAGE } from '../helpers/routes';
+import { SHOPKEEP_ROUTES } from '../helpers/routes';
+
+test.describe.configure({ mode: 'parallel' });
 
 /**
  * This file contains tests that confirm our login page at /login works correctly.
@@ -17,7 +19,7 @@ test.describe('Login', () => {
    * do that in a beforeEach instead of doing it in each test
    */
   test.beforeEach(async ({ page }) => {
-    await page.goto(LOGIN_PAGE);
+    await page.goto(SHOPKEEP_ROUTES.LOGIN);
     await page.waitForLoadState('networkidle');
   });
 
@@ -42,14 +44,15 @@ test.describe('Login', () => {
     await page.fill(LOGIN_PASSWORD_INPUT_SELECTOR, 'notarealaccountpassword');
 
     // Click the login button
-    await page.click(LOGIN_BUTTON_SELECTOR);
+    const loginButton = page.locator(LOGIN_BUTTON_SELECTOR);
+    await loginButton.click();
 
     // Wait for the error to display
     const locator = page.locator('text=Failed to log in');
     await locator.waitFor();
 
     // Ensure that the URL is still the login page
-    expect(page.url()).toBe(LOGIN_PAGE);
+    expect(page.url()).toBe(SHOPKEEP_ROUTES.LOGIN);
   });
 
   /**
@@ -58,9 +61,9 @@ test.describe('Login', () => {
    */
   test('button cannot be clicked if email and password are not filled out', async ({ page }) => {
     // Get the login button element
-    const button = await page.$(LOGIN_BUTTON_SELECTOR);
+    const button = page.locator(LOGIN_BUTTON_SELECTOR);
 
-    // Check if the button is disabled
-    if (button) expect(await button.isDisabled()).toBeTruthy();
+    // Make sure button is disabled
+    expect(await button.isDisabled()).toBeTruthy();
   });
 });
