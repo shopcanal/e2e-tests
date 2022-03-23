@@ -2,6 +2,8 @@ import { expect, test } from '@playwright/test';
 import { logIntoSupplier, logout } from '../../helpers/login';
 import { SUPPLIER_ROUTES } from '../../helpers/routes';
 
+test.describe.configure({ mode: 'parallel' });
+
 /**
  * This file contains tests that confirm we can successfully navigate around the
  * SUP app using the top nav
@@ -13,11 +15,6 @@ test.describe('Supplier Navigation', () => {
    */
   test.beforeEach(async ({ page, context }) => {
     await logIntoSupplier(page, context);
-
-    // Navigate to the overview page of the Supplier app
-    await page.goto(SUPPLIER_ROUTES.OVERVIEW);
-    const locator = page.locator('text=Welcome to Canal');
-    await locator.waitFor();
     await page.waitForLoadState('networkidle');
   });
 
@@ -26,78 +23,104 @@ test.describe('Supplier Navigation', () => {
   });
 
   test('renders the SUP Overview page', async ({ page }) => {
-    let locator = page.locator('text=Welcome to Canal');
-    await locator.waitFor();
-    locator = page.locator('text=The status of products listed on Canal is shown here.');
-    await locator.waitFor();
-    locator = page.locator('text=The percentage of each sale your storefront partners keep.');
-    await locator.waitFor();
-    locator = page.locator("text=View Canal's terms and conditions here at any time.");
-    await locator.waitFor();
+    const items = [
+      page.locator('text="Welcome to Canal"'),
+      page.locator(
+        'text="Manage the availability of your products on Canal so that Storefronts can start selling."',
+      ),
+      page.locator('text="Terms and conditions"'),
+    ];
+    await Promise.all(items.map((item) => item.waitFor()));
   });
 
-  test('can navigate successfully to the Settings page from the Settings tab', async ({ page }) => {
-    // Click the Settings link in the nav
-    await page.click('button#Settings');
+  test('can navigate to Overview from Discover', async ({ page }) => {
+    const discoverTab = page.locator('button >> text=Discover');
+    const overviewTab = page.locator('button >> text=Overview');
 
-    let locator = page.locator('text=Commission Rate');
-    await locator.waitFor();
-    locator = page.locator('text=Email address');
-    await locator.waitFor();
-    locator = page.locator('text=Logo & description');
-    await locator.waitFor();
+    // We start on the Overview page so navigate to Discover to make sure we can get back
+    expect(page.url().includes(SUPPLIER_ROUTES.OVERVIEW)).toBeTruthy();
+    await Promise.all([discoverTab.click(), page.waitForNavigation()]);
+    expect(page.url().includes(SUPPLIER_ROUTES.DISCOVER)).toBeTruthy();
 
-    // Ensure that the URL is for the SUP settings page
-    expect(page.url().includes(SUPPLIER_ROUTES.SETTINGS)).toBeTruthy();
-  });
-
-  test('can navigate successfully to the Inventory page from the Inventory tab', async ({
-    page,
-  }) => {
-    // Click the Inventory link in the nav
-    await page.click('button#Inventory');
-
-    let locator = page.locator(
-      'text=These products are available on Canal so storefronts can request to sell.',
-    );
-    await locator.waitFor();
-    locator = page.locator(
-      'text=Add unlisted products to Canal so storefronts can request to sell.',
-    );
-    await locator.waitFor();
+    // Navigate back to Overview
+    await Promise.all([overviewTab.click(), page.waitForNavigation()]);
 
     // Ensure that the URL is for the SUP inventory page
-    expect(page.url().includes(SUPPLIER_ROUTES.INVENTORY)).toBeTruthy();
+    expect(page.url().includes(SUPPLIER_ROUTES.OVERVIEW)).toBeTruthy();
   });
 
-  test('can navigate successfully to the Discover page from the Discover tab', async ({ page }) => {
-    // Click the Discover link in the nav
-    await page.click('button#Discover');
+  test('can navigate to Discover from Overview', async ({ page }) => {
+    const tab = page.locator('button >> text=Discover');
 
-    const locator = page.locator(
-      "text=Pre-approve storefronts so that they don't need to request. You can choose which products to approve.",
-    );
-    await locator.waitFor();
+    // Navigate via clicking the tab in the nav
+    expect(page.url().includes(SUPPLIER_ROUTES.OVERVIEW)).toBeTruthy();
+    await Promise.all([tab.click(), page.waitForNavigation()]);
 
     // Ensure that the URL is for the SUP discover page
     expect(page.url().includes(SUPPLIER_ROUTES.DISCOVER)).toBeTruthy();
   });
 
-  test('can navigate successfully to the Requests page from the Requests tab', async ({ page }) => {
-    // Click the Requests link in the nav
-    await page.click('button#Requests');
+  test('can navigate to Inventory from Overview', async ({ page }) => {
+    const tab = page.locator('button >> text=Inventory');
 
-    // Expect to see the four tabs for filtering requests
-    let locator = page.locator('button#All-requests-tab');
-    await locator.waitFor();
-    locator = page.locator('button#Approved-requests-tab');
-    await locator.waitFor();
-    locator = page.locator('button#Pending-requests-tab');
-    await locator.waitFor();
-    locator = page.locator('button#Rejected-requests-tab');
-    await locator.waitFor();
+    // Navigate via clicking the tab in the nav
+    expect(page.url().includes(SUPPLIER_ROUTES.OVERVIEW)).toBeTruthy();
+    await Promise.all([tab.click(), page.waitForNavigation()]);
 
-    // Ensure that the URL is for the SUP Requests page
-    expect(page.url().includes(SUPPLIER_ROUTES.REQUESTS)).toBeTruthy();
+    // Ensure that the URL is for the SUP inventory page
+    expect(page.url().includes(SUPPLIER_ROUTES.INVENTORY)).toBeTruthy();
+  });
+
+  test('can navigate to Storefronts from Overview', async ({ page }) => {
+    const tab = page.locator('button >> text="My Storefronts"');
+
+    // Navigate via clicking the tab in the nav
+    expect(page.url().includes(SUPPLIER_ROUTES.OVERVIEW)).toBeTruthy();
+    await Promise.all([tab.click(), page.waitForNavigation()]);
+
+    // Ensure that the URL is for the SUP storefronts page
+    expect(page.url().includes(SUPPLIER_ROUTES.STOREFRONTS)).toBeTruthy();
+  });
+
+  test('can navigate to Proposals from Overview', async ({ page }) => {
+    const tab = page.locator('button >> text=Proposals');
+
+    // Navigate via clicking the tab in the nav
+    expect(page.url().includes(SUPPLIER_ROUTES.OVERVIEW)).toBeTruthy();
+    await Promise.all([tab.click(), page.waitForNavigation()]);
+
+    // Ensure that the URL is for the SUP proposals page
+    expect(page.url().includes(SUPPLIER_ROUTES.PROPOSALS)).toBeTruthy();
+  });
+
+  test('can navigate to Settings via dropdown', async ({ page }) => {
+    // The button that has the user's name is the dropdown in the upper right to log out
+    const profileDropdown = page.locator('button:has-text("e2e_tester")');
+    const button = page.locator('button:has-text("Settings") >> nth=0');
+
+    expect(page.url().includes(SUPPLIER_ROUTES.OVERVIEW)).toBeTruthy();
+
+    // Open the profile dropdown then click the button
+    await profileDropdown.click();
+    await Promise.all([button.click(), page.waitForNavigation()]);
+
+    // Ensure that the URL is for the settings page
+    expect(page.url().includes(SUPPLIER_ROUTES.SETTINGS)).toBeTruthy();
+  });
+
+  test('can navigate to external FAQs via dropdown', async ({ page, context }) => {
+    // The button that has the user's name is the dropdown in the upper right to log out
+    const profileDropdown = page.locator('button:has-text("e2e_tester")');
+    const button = page.locator('button:has-text("FAQs")');
+
+    expect(page.url().includes(SUPPLIER_ROUTES.OVERVIEW)).toBeTruthy();
+
+    // Open the profile dropdown then click the button (which opens a new page)
+    await profileDropdown.click();
+    const [newPage] = await Promise.all([context.waitForEvent('page'), button.click()]);
+
+    // Ensure that the new page's URL is for the external FAQ page and the existing page didn't change
+    expect(page.url().includes(SUPPLIER_ROUTES.OVERVIEW)).toBeTruthy();
+    expect(newPage.url().includes('https://faq.shopcanal.com/en/')).toBeTruthy();
   });
 });

@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { logIntoShopkeep, logout } from '../../helpers/login';
-import { LOGIN_PAGE, SHOPKEEP_ROUTES } from '../../helpers/routes';
+import { SHOPKEEP_ROUTES } from '../../helpers/routes';
 
 test.describe.configure({ mode: 'parallel' });
 
@@ -47,7 +47,6 @@ test.describe('Shopkeep Navigation', () => {
 
     // Ensure that the URL is for the SK discover page
     expect(page.url().includes(SHOPKEEP_ROUTES.DISCOVER)).toBeTruthy();
-    await page.pause();
   });
 
   test('can navigate to Suppliers from Inventory', async ({ page }) => {
@@ -95,7 +94,7 @@ test.describe('Shopkeep Navigation', () => {
     await Promise.all([button.click(), page.waitForNavigation()]);
 
     // Ensure that the URL is for the login page
-    expect(page.url().includes(LOGIN_PAGE)).toBeTruthy();
+    expect(page.url().includes(SHOPKEEP_ROUTES.LOGIN)).toBeTruthy();
   });
 
   test('can navigate to Settings via dropdown', async ({ page }) => {

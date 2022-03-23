@@ -1,6 +1,6 @@
 import type { BrowserContext, Page } from '@playwright/test';
 import { expect } from '@playwright/test';
-import { LOGIN_PAGE, SHOPKEEP_ROUTES, SUPPLIER_ROUTES } from './routes';
+import { SHOPKEEP_ROUTES, SUPPLIER_ROUTES } from './routes';
 
 /**
  * Selectors used for logging in
@@ -17,6 +17,7 @@ const E2E_ACCOUNT_LOGIN = 'e2e_tester@shopcanal.com';
 const logIn = async (
   page: Page,
   context: BrowserContext,
+  loginUrl: string,
   firstLoggedInPageUrl: string,
 ): Promise<void> => {
   if (process.env.APP_TEST_PASSWORD) {
@@ -24,7 +25,7 @@ const logIn = async (
     await logout(context);
 
     // Navigate to login page and wait for login button to load
-    await page.goto(LOGIN_PAGE);
+    await page.goto(loginUrl);
     const locator = page.locator(LOGIN_BUTTON_SELECTOR);
     await locator.waitFor();
 
@@ -45,13 +46,13 @@ const logIn = async (
  * Logs a user into the shopkeep landing page
  */
 export const logIntoShopkeep = async (page: Page, context: BrowserContext): Promise<void> =>
-  logIn(page, context, SHOPKEEP_ROUTES.INVENTORY);
+  logIn(page, context, SHOPKEEP_ROUTES.LOGIN, SHOPKEEP_ROUTES.INVENTORY);
 
 /**
  * Logs a user into the supplier landing page
  */
 export const logIntoSupplier = async (page: Page, context: BrowserContext): Promise<void> =>
-  logIn(page, context, SUPPLIER_ROUTES.OVERVIEW);
+  logIn(page, context, SUPPLIER_ROUTES.LOGIN, SUPPLIER_ROUTES.OVERVIEW);
 
 /**
  * Simulates a log out by clearing cookies. With a refresh, this should be enough
