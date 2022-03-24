@@ -51,8 +51,9 @@ Add a new test file to `tests`, written in Typescript and with a `.spec.ts` endi
 
 Best practices for non-flaky and easy to debug tests:
 
-1. **NO TIMEOUTS**. Period. If you find yourself waiting for an arbitrary amount of time, there's _always_ a better way to do it. Familiarize yourself with the [`page` API](https://playwright.dev/docs/api/class-page). Usually a `waitForNavigation` or `waitFor({ state: 'visible' })` on a locator clears up your issue. There's a few other tips about this below.
-2. Don't use things like `page.$` or `page.$$` or `page.waitForSelector` to get elements! Instead use Playwright's [`locator` objects](https://playwright.dev/docs/api/class-locator). They are executed every time they're used vs. just once when you create a selector, so they're more resilient to change + less flaky as a result. You can use these like selectors.
+- **NO TIMEOUTS**. Period. If you find yourself waiting for an arbitrary amount of time, there's _always_ a better way to do it. Familiarize yourself with the [`page` API](https://playwright.dev/docs/api/class-page). Usually a `waitForNavigation` or `waitFor({ state: 'visible' })` on a locator clears up your issue. There's a few other tips about this below.
+
+- Don't use things like `page.$` or `page.$$` or `page.waitForSelector` to get elements! Instead use Playwright's [`locator` objects](https://playwright.dev/docs/api/class-locator). They are executed every time they're used vs. just once when you create a selector, so they're more resilient to change + less flaky as a result. You can use these like selectors.
 
 ```typescript
 const tabButton = page.locator('text=Discover');
@@ -61,14 +62,14 @@ await tabButton.click(); // simply click on the button once it's visible, for ex
 await tabButton.waitFor({ state: 'hidden' }); // wait for it to be hidden, for example
 ```
 
-3. If you need to await a navigation to a new page when there's a button click (for example), do it in a `Promise.all` so that there's no race condition between the navigation and the action that opens the new page:
+- If you need to await a navigation to a new page when there's a button click (for example), do it in a `Promise.all` so that there's no race condition between the navigation and the action that opens the new page:
 
 ```typescript
 const button = page.locator('text=Hi');
 await Promise.all([button.click(), page.waitForNavigation()]);
 ```
 
-4. But if the action opens a new tab/window instead of navigates the existing page, you capture the new page instead of waiting for navigation. Treat the new page object like you would the normal `page` variable (you can test title, url, etc, get elements, etc).
+- But if the action opens a new tab/window instead of navigates the existing page, you capture the new page instead of waiting for navigation. Treat the new page object like you would the normal `page` variable (you can test title, url, etc, get elements, etc).
 
 ```typescript
 const button = page.locator('text=Hi');
