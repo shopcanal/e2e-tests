@@ -9,14 +9,17 @@ jobs:
       matrix:
         # Each of these are browser names we want to run tests against in parallel
         browser: ['chromium', 'webkit', 'firefox']
+        # We split tests into 4 different shards to run in parallel for speed
+        shard: [1, 2, 3, 4]
     steps:
       - uses: actions/checkout@v2
 
       # Uses the internal Github action for testing the tester!
       - uses: ./
-        name: test ${{ matrix.browser }}
+        name: test ${{ matrix.browser }} [${{ matrix.shard }}/4]
         env:
           APP_TEST_PASSWORD: ${{ secrets.APP_TEST_PASSWORD }}
           E2E_DATA_SETUP_URL: ${{ secrets.E2E_DATA_SETUP_URL }}
         with:
           browser: ${{ matrix.browser }}
+          shard: '${{ matrix.shard }}/4'
