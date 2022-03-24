@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { logIntoShopkeep, logout } from '../../helpers/login';
+import { logIntoShopkeep } from '../../helpers/login';
 import { SHOPKEEP_ROUTES } from '../../helpers/routes';
 
 test.describe.configure({ mode: 'parallel' });
@@ -20,17 +20,13 @@ test.describe('Shopkeep Proposals', () => {
    * and then navigate to the Discover page
    */
   test.beforeEach(async ({ context, page }) => {
+    // Look for the proposals text below the profile dropdown, not next to it
+    const locator = page.locator(':below(button:has-text("e2e_tester")):text("Proposals")');
+
     await logIntoShopkeep(page, context);
     await page.goto(SHOPKEEP_ROUTES.PROPOSALS);
-
-    expect(page.url().includes(SHOPKEEP_ROUTES.PROPOSALS)).toBeTruthy();
-
-    // Wait for the request data to load before continuing
-    await page.waitForLoadState('networkidle');
-  });
-
-  test.afterEach(async ({ context }) => {
-    await logout(context);
+    await locator.waitFor();
+    expect(page.url()).toEqual(SHOPKEEP_ROUTES.PROPOSALS);
   });
 
   test('display a proposal and buttons for filtering by status', async ({ page }) => {
@@ -46,26 +42,16 @@ test.describe('Shopkeep Proposals', () => {
     await Promise.all(filters.map((filter) => filter.waitFor()));
   });
 
-  test('clicking the Pending filter shows one pending request', async ({ page }) => {
+  test('clicking the Pending filter still shows one pending request', async ({ page }) => {
     const tab = page.locator(PENDING_FILTER);
     const item = page.locator(ITEM_SELECTOR);
+    await item.waitFor();
 
-    // Click the filter and make sure we navigate
-    await Promise.all([tab.click(), page.waitForLoadState('networkidle')]);
+    // Click the filter
+    await tab.click();
 
     // Check that there is one list item still
     await item.waitFor();
-  });
-
-  test('clicking the Approved filter shows no requests', async ({ page }) => {
-    const tab = page.locator(APPROVED_FILTER);
-    const item = page.locator(ITEM_SELECTOR);
-
-    // Click the filter and make sure we navigate
-    await Promise.all([tab.click(), page.waitForLoadState('networkidle')]);
-
-    // Make sure there's no list item
-    await item.waitFor({ state: 'detached' });
   });
 
   test('clicking the Approved filter shows no requests, then clicking All shows one request', async ({
@@ -76,13 +62,12 @@ test.describe('Shopkeep Proposals', () => {
     const item = page.locator(ITEM_SELECTOR);
 
     // Click the filter and make sure we navigate and there's no item
-    await Promise.all([tab.click(), page.waitForLoadState('networkidle')]);
+    await item.waitFor();
+    await tab.click();
     await item.waitFor({ state: 'detached' });
 
     // Navigate back to all and make sure there's an item back
-    await Promise.all([allTab.click(), page.waitForLoadState('networkidle')]);
+    await allTab.click();
     await item.waitFor();
   });
-
-  // TODO: click on the line item action buttons and test the request response pages
 });

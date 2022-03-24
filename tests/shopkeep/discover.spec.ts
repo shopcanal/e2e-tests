@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { test } from '@playwright/test';
 import { logIntoShopkeep } from '../../helpers/login';
 import { SHOPKEEP_ROUTES } from '../../helpers/routes';
 
@@ -15,11 +15,7 @@ test.describe('Shopkeep Discover', () => {
    */
   test.beforeEach(async ({ context, page }) => {
     await logIntoShopkeep(page, context);
-    await page.goto(SHOPKEEP_ROUTES.DISCOVER);
-
-    expect(page.url().includes(SHOPKEEP_ROUTES.DISCOVER)).toBeTruthy();
-
-    await page.waitForLoadState('networkidle');
+    await page.goto(SHOPKEEP_ROUTES.DISCOVER, { waitUntil: 'networkidle' });
   });
 
   // TODO: add tests once this page is ready to be launched

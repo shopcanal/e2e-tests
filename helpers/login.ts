@@ -20,22 +20,29 @@ const logIn = async (
   loginUrl: string,
   firstLoggedInPageUrl: string,
 ): Promise<void> => {
+  const loginButton = page.locator(LOGIN_BUTTON_SELECTOR);
+  const profileDropdown = page.locator('button:has-text("e2e_tester")');
+
   if (process.env.APP_TEST_PASSWORD) {
     // Make sure browser is logged out before attempting to go through login flow
-    await logout(context);
+    await logout(page, context);
 
     // Navigate to login page and wait for login button to load
-    await page.goto(loginUrl);
-    const locator = page.locator(LOGIN_BUTTON_SELECTOR);
-    await locator.waitFor();
+    await page.goto(loginUrl, { waitUntil: 'networkidle' });
+    await loginButton.waitFor();
 
     // Fill out email and password
     await page.fill(LOGIN_EMAIL_INPUT_SELECTOR, E2E_ACCOUNT_LOGIN);
     await page.fill(LOGIN_PASSWORD_INPUT_SELECTOR, process.env.APP_TEST_PASSWORD || '');
 
-    // Then click the login button
-    await locator.click();
-    await page.waitForURL(firstLoggedInPageUrl);
+    // Then click the login button and make sure we navigate
+    await loginButton.click();
+
+    // Make sure the profile dropdown shows, as this appears on both sides once logged in
+    await profileDropdown.waitFor();
+
+    // Make sure this is the page we want
+    expect(page.url().includes(firstLoggedInPageUrl)).toBeTruthy();
   } else {
     console.warn('Could not log in because no APP_TEST_PASSWORD was provided. Failing test.');
     expect(true).toBe(false);
@@ -55,9 +62,8 @@ export const logIntoSupplier = async (page: Page, context: BrowserContext): Prom
   logIn(page, context, SUPPLIER_ROUTES.LOGIN, SUPPLIER_ROUTES.OVERVIEW);
 
 /**
- * Simulates a log out by clearing cookies. With a refresh, this should be enough
- * to fully log out.
+ * Simulates a log out by clearing cookies. On next page nav, we'll refresh.
  */
-export const logout = async (context: BrowserContext): Promise<void> => {
+export const logout = async (page: Page, context: BrowserContext): Promise<void> => {
   await context.clearCookies();
 };

@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 import {
   logIntoShopkeep,
+  logIntoSupplier,
   LOGIN_BUTTON_SELECTOR,
   LOGIN_EMAIL_INPUT_SELECTOR,
   LOGIN_PASSWORD_INPUT_SELECTOR,
@@ -19,19 +20,23 @@ test.describe('Login', () => {
    * do that in a beforeEach instead of doing it in each test
    */
   test.beforeEach(async ({ page }) => {
-    await page.goto(SHOPKEEP_ROUTES.LOGIN);
-    await page.waitForLoadState('networkidle');
+    await page.goto(SHOPKEEP_ROUTES.LOGIN, { waitUntil: 'networkidle' });
   });
 
   /**
    * Tests that the user can fill out the email and password inputs, then
    * click login and be redirected to the app
    */
-  test('can fill out valid email and password and successfully log in', async ({
-    context,
-    page,
-  }) => {
+  test('valid email and password logs us into Shopkeep', async ({ context, page }) => {
     await logIntoShopkeep(page, context);
+  });
+
+  /**
+   * Tests that the user can fill out the email and password inputs, then
+   * click login and be redirected to the app
+   */
+  test('valid email and password logs us into Supplier', async ({ context, page }) => {
+    await logIntoSupplier(page, context);
   });
 
   /**

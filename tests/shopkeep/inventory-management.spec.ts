@@ -13,7 +13,6 @@ test.describe('Shopkeep Inventory Management', () => {
    */
   test.beforeEach(async ({ context, page }) => {
     await logIntoShopkeep(page, context);
-    await page.waitForLoadState('networkidle');
   });
 
   /**

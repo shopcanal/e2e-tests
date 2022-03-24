@@ -29,6 +29,5 @@ test.describe('Visit to the Shopify App Url', () => {
 
   test('sends users to Shopify login page', async ({ page }) => {
     await expect(page).toHaveURL(SHOPIFY_AUTH_URL_RE);
-    await page.close();
   });
 });

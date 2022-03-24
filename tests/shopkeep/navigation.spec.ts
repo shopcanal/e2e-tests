@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { logIntoShopkeep, logout } from '../../helpers/login';
+import { logIntoShopkeep } from '../../helpers/login';
 import { SHOPKEEP_ROUTES } from '../../helpers/routes';
 
 test.describe.configure({ mode: 'parallel' });
@@ -15,24 +15,24 @@ test.describe('Shopkeep Navigation', () => {
    */
   test.beforeEach(async ({ context, page }) => {
     await logIntoShopkeep(page, context);
-    await page.waitForLoadState('networkidle');
-  });
-
-  test.afterEach(async ({ context }) => {
-    await logout(context);
   });
 
   test('can navigate to Inventory from Discover', async ({ page }) => {
-    const discoverTab = page.locator('button >> text=Discover');
-    const inventoryTab = page.locator('button >> text=Inventory');
+    const tab = page.locator('button >> text=Inventory');
+
+    // Look for the Products text below the profile dropdown, not next to it
+    const result = page.locator(
+      ':below(button:has-text("e2e_tester")) >> span:has-text("Products")',
+    );
 
     // We start on the Inventory page so navigate to Discover to make sure we can get back
-    expect(page.url().includes(SHOPKEEP_ROUTES.INVENTORY)).toBeTruthy();
-    await Promise.all([discoverTab.click(), page.waitForNavigation()]);
+    await page.goto(SHOPKEEP_ROUTES.DISCOVER);
+    await tab.waitFor();
     expect(page.url().includes(SHOPKEEP_ROUTES.DISCOVER)).toBeTruthy();
 
     // Navigate back to Inventory
-    await Promise.all([inventoryTab.click(), page.waitForNavigation()]);
+    await tab.click();
+    await result.waitFor();
 
     // Ensure that the URL is for the SK inventory page
     expect(page.url().includes(SHOPKEEP_ROUTES.INVENTORY)).toBeTruthy();
@@ -41,9 +41,13 @@ test.describe('Shopkeep Navigation', () => {
   test('can navigate to Discover from Inventory', async ({ page }) => {
     const tab = page.locator('button >> text=Discover');
 
+    // Look for the Suppliers text below the profile dropdown, not next to it
+    const result = page.locator(':below(button:has-text("e2e_tester")):text("Suppliers")');
+
     // Navigate via clicking the tab in the nav
     expect(page.url().includes(SHOPKEEP_ROUTES.INVENTORY)).toBeTruthy();
-    await Promise.all([tab.click(), page.waitForNavigation()]);
+    await tab.click();
+    await result.waitFor();
 
     // Ensure that the URL is for the SK discover page
     expect(page.url().includes(SHOPKEEP_ROUTES.DISCOVER)).toBeTruthy();
@@ -51,10 +55,12 @@ test.describe('Shopkeep Navigation', () => {
 
   test('can navigate to Suppliers from Inventory', async ({ page }) => {
     const tab = page.locator('button >> text="My Suppliers"');
+    const result = page.locator('text="1 Supplier"');
 
     // Navigate via clicking the tab in the nav
     expect(page.url().includes(SHOPKEEP_ROUTES.INVENTORY)).toBeTruthy();
-    await Promise.all([tab.click(), page.waitForNavigation()]);
+    await tab.click();
+    await result.waitFor();
 
     // Ensure that the URL is for the SK suppliers page
     expect(page.url().includes(SHOPKEEP_ROUTES.SUPPLIERS)).toBeTruthy();
@@ -62,10 +68,12 @@ test.describe('Shopkeep Navigation', () => {
 
   test('can navigate to Proposals from Inventory', async ({ page }) => {
     const tab = page.locator('button >> text="Proposals"');
+    const result = page.locator('text="Proposal to e2e_tester"');
 
     // Navigate via clicking the tab in the nav
     expect(page.url().includes(SHOPKEEP_ROUTES.INVENTORY)).toBeTruthy();
-    await Promise.all([tab.click(), page.waitForNavigation()]);
+    await tab.click();
+    await result.waitFor();
 
     // Ensure that the URL is for the SK proposals page
     expect(page.url().includes(SHOPKEEP_ROUTES.PROPOSALS)).toBeTruthy();
@@ -73,10 +81,14 @@ test.describe('Shopkeep Navigation', () => {
 
   test('can navigate to Invite from Inventory', async ({ page }) => {
     const tab = page.locator('button >> text="Invite a Brand"');
+    const result = page.locator(
+      'text="Get started by inviting brands you trust. You\'ll be selling together in no time."',
+    );
 
     // Navigate via clicking the tab in the nav
     expect(page.url().includes(SHOPKEEP_ROUTES.INVENTORY)).toBeTruthy();
-    await Promise.all([tab.click(), page.waitForNavigation()]);
+    await tab.click();
+    await result.waitFor();
 
     // Ensure that the URL is for the SK invite page
     expect(page.url().includes(SHOPKEEP_ROUTES.INVITE)).toBeTruthy();
@@ -86,12 +98,14 @@ test.describe('Shopkeep Navigation', () => {
     // The button that has the user's name is the dropdown in the upper right to log out
     const profileDropdown = page.locator('button:has-text("e2e_tester")');
     const button = page.locator('button:has-text("Log Out")');
+    const result = page.locator('button#login');
 
     expect(page.url().includes(SHOPKEEP_ROUTES.INVENTORY)).toBeTruthy();
 
     // Open the profile dropdown then click the button
     await profileDropdown.click();
-    await Promise.all([button.click(), page.waitForNavigation()]);
+    await button.click();
+    await result.waitFor();
 
     // Ensure that the URL is for the login page
     expect(page.url().includes(SHOPKEEP_ROUTES.LOGIN)).toBeTruthy();
@@ -101,12 +115,14 @@ test.describe('Shopkeep Navigation', () => {
     // The button that has the user's name is the dropdown in the upper right to log out
     const profileDropdown = page.locator('button:has-text("e2e_tester")');
     const button = page.locator('button:has-text("Settings") >> nth=0');
+    const result = page.locator('text="Deactivate account"');
 
     expect(page.url().includes(SHOPKEEP_ROUTES.INVENTORY)).toBeTruthy();
 
     // Open the profile dropdown then click the button
     await profileDropdown.click();
-    await Promise.all([button.click(), page.waitForNavigation()]);
+    await button.click();
+    await result.waitFor();
 
     // Ensure that the URL is for the settings page
     expect(page.url().includes(SHOPKEEP_ROUTES.SETTINGS)).toBeTruthy();
