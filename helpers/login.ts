@@ -28,7 +28,7 @@ const logIn = async (
     await logout(page, context);
 
     // Navigate to login page and wait for login button to load
-    await page.goto(loginUrl, { waitUntil: 'networkidle' });
+    await page.goto(loginUrl);
     await loginButton.waitFor();
 
     // Fill out email and password
