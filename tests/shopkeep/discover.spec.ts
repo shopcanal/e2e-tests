@@ -15,7 +15,7 @@ test.describe('Shopkeep Discover', () => {
    */
   test.beforeEach(async ({ context, page }) => {
     await logIntoShopkeep(page, context);
-    await page.goto(SHOPKEEP_ROUTES.DISCOVER, { waitUntil: 'networkidle' });
+    await page.goto(SHOPKEEP_ROUTES.DISCOVER);
   });
 
   // TODO: add tests once this page is ready to be launched

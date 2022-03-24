@@ -20,7 +20,7 @@ test.describe('Login', () => {
    * do that in a beforeEach instead of doing it in each test
    */
   test.beforeEach(async ({ page }) => {
-    await page.goto(SHOPKEEP_ROUTES.LOGIN, { waitUntil: 'networkidle' });
+    await page.goto(SHOPKEEP_ROUTES.LOGIN);
   });
 
   /**
