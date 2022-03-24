@@ -12,11 +12,18 @@ to all browsers. Use `main` to keep up to date against the latest E2E tests writ
 to that version. Usually you want `main`. Github action is written in Dockerfile + action.yml + action.sh if you need
 to change it.
 
+The tests can be sharded, but default to only one shard! Here's how both options would work:
+
 ```yml
+strategy:
+  matrix:
+    browser: ['chromium', 'webkit', 'firefox']
+    shard: [1, 2, 3, 4]
 steps:
   - uses: shopcanal/e2e-tests@main
     with:
       browser: ${{ matrix.browser }}
+      shard: '${{ matrix.shard }} / 4'
 ```
 
 ## Committing changes
