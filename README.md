@@ -76,9 +76,34 @@ const button = page.locator('text=Hi');
 await Promise.all([button.click(), page.waitForNavigation()]);
 ```
 
-- But if the action opens a new tab/window instead of navigates the existing page, you capture the new page instead of waiting for navigation. Treat the new page object like you would the normal `page` variable (you can test title, url, etc, get elements, etc).
+However, if you're needing the `waitForNavigation` for the test pass, **there's usually a better way to do it**. Usually, this just means you need a locator on the next page that you `waitFor` after the button click. That could look like this:
+
+```typescript
+const tab = page.locator('nav button:has-text("Discover")');
+const discoverHeader = page.locator('text="Discover products to feature on your store"');
+
+// Shouldn't be visible
+await discoverHeader.waitFor({ state: 'detached' });
+
+// Clicking the tab should navigate us to discover and show the header
+await tab.click();
+await discoverHeader.waitFor();
+```
+
+- But if the action opens a new tab/window instead of navigates the existing page, you do need to capture the new page instead of waiting for navigation/some other locator on the page. Treat the new page object like you would the normal `page` variable (you can test title, url, etc, get elements, etc).
 
 ```typescript
 const button = page.locator('text=Hi');
+
 const [newPage] = await Promise.all([context.waitForEvent('page'), button.click()]);
+const newPageHeader = newPage.locator('text="Discover Products"');
+await newPageHeader.waitFor();
 ```
+
+### Turning off tests/addressing flaky tests
+
+If there's a flaky test/etc that can't be immediately fixed, add a `test.skip(true, 'reason why here')` at the top of the test - it'll show up as a skipped test, but won't be run. This is better than commenting it out, as it provides an indication of how many we're skipping/how quickly we need to address the backlog of flaky tests.
+
+If a test appears to be flaky, try removing all need to `waitForNavigation` or `waitForURL` from it. Instead, follow the tips and tricks above to switch to waiting for locators. That's a surefire way to avoid race conditions with navigation.
+
+Testing for flakiness can be done by running all tests with `--workers=20` or some other high number. Having this many workers at once may expose problems faster than with fewer workers running tests in parallel. You can also try running the tests in a loop in code to see how often the flaky ones fail.
