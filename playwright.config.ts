@@ -11,7 +11,8 @@ const config: PlaywrightTestConfig = {
   forbidOnly: !!process.env.CI,
 
   // Two retries on CI env
-  retries: process.env.CI ? 2 : 0,
+  // TODO: @dgattey turn this back on when ready
+  // retries: process.env.CI ? 2 : 0,
 
   // Traces turned on if we retry
   use: {

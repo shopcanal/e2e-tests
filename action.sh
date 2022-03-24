@@ -7,5 +7,5 @@ echo "Installing packages..."
 yarn
 
 echo "Running tests on $BROWSER (shard $SHARD)..."
-HOME=/root yarn test --project=$BROWSER --shard=$SHARD
+HOME=/root DEBUG=pw:api,pw:browser yarn test --project=$BROWSER --shard=$SHARD
 
