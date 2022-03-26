@@ -4,12 +4,23 @@ const config: PlaywrightTestConfig = {
   // 1 minute timeout per test
   timeout: 60000,
 
+  // Every test in every file is run in parallel
+  fullyParallel: true,
+
   // No test.only on CI
   forbidOnly: !!process.env.CI,
 
-  // Traces turned on if we retry
+  // Only 2 workers on CI for less flakiness hopefully
+  workers: process.env.CI ? 2 : undefined,
+
+  // 2 retries on CI since it appears that Playwright has problems with locators
+  retries: process.env.CI ? 2 : 0,
+
+  // Huge timeouts for actions + navgation to avoid flakiness, plus no HTTPS errors affecting it
   use: {
-    trace: 'on-first-retry',
+    ignoreHTTPSErrors: true,
+    actionTimeout: 60000,
+    navigationTimeout: 60000,
   },
 
   // Named projects for convenience
