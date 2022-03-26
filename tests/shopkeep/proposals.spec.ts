@@ -1,8 +1,7 @@
 import { expect, test } from '@playwright/test';
+import { intercept } from '../../helpers/intercept';
 import { logIntoShopkeep } from '../../helpers/login';
 import { SHOPKEEP_ROUTES } from '../../helpers/routes';
-
-test.describe.configure({ mode: 'parallel' });
 
 /**
  * This file contains tests that verify the Proposals pages are working
@@ -23,6 +22,7 @@ test.describe('Shopkeep Proposals', () => {
     // Look for the proposals text below the profile dropdown, not next to it
     const locator = page.locator(':below(button:has-text("e2e_tester")):text("Proposals")');
 
+    await intercept(page);
     await logIntoShopkeep(page, context);
     await page.goto(SHOPKEEP_ROUTES.PROPOSALS);
     await locator.waitFor();

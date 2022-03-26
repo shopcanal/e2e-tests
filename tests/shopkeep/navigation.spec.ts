@@ -1,8 +1,7 @@
 import { expect, test } from '@playwright/test';
+import { intercept } from '../../helpers/intercept';
 import { logIntoShopkeep } from '../../helpers/login';
 import { SHOPKEEP_ROUTES } from '../../helpers/routes';
-
-test.describe.configure({ mode: 'parallel' });
 
 /**
  * This file contains tests that confirm we can successfully navigate around the
@@ -14,6 +13,7 @@ test.describe('Shopkeep Navigation', () => {
    * We need to be logged in for each test, so we should log in before this test suite runs.
    */
   test.beforeEach(async ({ context, page }) => {
+    await intercept(page);
     await logIntoShopkeep(page, context);
   });
 

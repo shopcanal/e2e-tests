@@ -6,8 +6,6 @@
 import { expect, test } from '@playwright/test';
 import { SK_APP_URL } from '../helpers/routes';
 
-test.describe.configure({ mode: 'parallel' });
-
 const SHOPIFY_AUTH_URL_RE = /https:\/\/accounts.shopify.com\/lookup/;
 
 test.describe('Visit to the Shopify App Url', () => {
@@ -22,8 +20,10 @@ test.describe('Visit to the Shopify App Url', () => {
     );
     url.searchParams.set('host', 'anexamplehostvalue');
     // Anything with a myshopify.com suffix works here.
-    url.searchParams.set('shop', 'canal-felipe-test-store.myshopify.com');
+    url.searchParams.set('shop', 'store.myshopify.com');
     url.searchParams.set('timestamp', Date.now().toString());
+
+    // IMPORTANT: this can't have interception turned on for the third party scripts, otherwise it (obviously) fails
     await page.goto(url.toString());
   });
 

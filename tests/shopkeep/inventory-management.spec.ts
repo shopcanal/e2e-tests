@@ -1,7 +1,6 @@
 import { expect, test } from '@playwright/test';
+import { intercept } from '../../helpers/intercept';
 import { logIntoShopkeep } from '../../helpers/login';
-
-test.describe.configure({ mode: 'parallel' });
 
 /**
  * This file contains tests that confirm we can add and modify Shopify products
@@ -12,6 +11,7 @@ test.describe('Shopkeep Inventory Management', () => {
    * We need to be logged in for each test, so we should log in before this test suite runs.
    */
   test.beforeEach(async ({ context, page }) => {
+    await intercept(page);
     await logIntoShopkeep(page, context);
   });
 

@@ -1,8 +1,7 @@
 import { expect, test } from '@playwright/test';
+import { intercept } from '../../helpers/intercept';
 import { logIntoSupplier } from '../../helpers/login';
 import { SHOPKEEP_ROUTES, SUPPLIER_ROUTES } from '../../helpers/routes';
-
-test.describe.configure({ mode: 'parallel' });
 
 /**
  * This file contains tests that confirm we can successfully navigate around the
@@ -14,6 +13,7 @@ test.describe('Supplier Navigation', () => {
    * We need to be logged in for each test, so we should log in before this test suite runs.
    */
   test.beforeEach(async ({ page, context }) => {
+    await intercept(page);
     await logIntoSupplier(page, context);
   });
 

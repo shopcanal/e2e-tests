@@ -1,4 +1,7 @@
 import { test } from '@playwright/test';
+import { intercept } from '../helpers/intercept';
+
+test.beforeEach(async ({ page }) => intercept(page));
 
 /**
  * This file contains tests that confirm our main site, https://shopcanal.com, is up and
@@ -11,8 +14,6 @@ const SCREENSHOTS: Record<string, string> = {
   privacy: 'https://shopcanal.com/privacy',
   terms: 'https://shopcanal.com/terms',
 };
-
-test.describe.configure({ mode: 'parallel' });
 
 test('Home - take screenshots', async ({ page }) => {
   for (const screenshotName of Object.keys(SCREENSHOTS)) {

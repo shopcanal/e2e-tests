@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { intercept } from '../helpers/intercept';
 import {
   logIntoShopkeep,
   logIntoSupplier,
@@ -7,8 +8,6 @@ import {
   LOGIN_PASSWORD_INPUT_SELECTOR,
 } from '../helpers/login';
 import { SHOPKEEP_ROUTES } from '../helpers/routes';
-
-test.describe.configure({ mode: 'parallel' });
 
 /**
  * This file contains tests that confirm our login page at /login works correctly.
@@ -20,6 +19,7 @@ test.describe('Login', () => {
    * do that in a beforeEach instead of doing it in each test
    */
   test.beforeEach(async ({ page }) => {
+    await intercept(page);
     await page.goto(SHOPKEEP_ROUTES.LOGIN);
   });
 
