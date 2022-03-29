@@ -9,8 +9,13 @@ inputs:
     description: 'The browser against which to run tests, defaults to all if not provided'
     required: false
     default: 'all'
+  shard:
+    description: 'The test shard so we can execute only part at a time. Will be 1/3 or 4/7, etc. Defaults to 1/1'
+    required: false
+    default: '1/1'
 runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
     - '${{ inputs.browser }}'
+    - '${{ inputs.shard }}'

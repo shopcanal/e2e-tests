@@ -1,5 +1,7 @@
-import { test } from '@playwright/test';
-import { logInSuccessfully, logout } from '../../helpers/login';
+import { expect, test } from '@playwright/test';
+import { intercept } from '../../helpers/intercept';
+import { logIntoShopkeep } from '../../helpers/login';
+import { SHOPKEEP_ROUTES } from '../../helpers/routes';
 
 /**
  * This file contains tests that confirm we can successfully navigate around the
@@ -11,87 +13,168 @@ test.describe('Shopkeep Navigation', () => {
    * We need to be logged in for each test, so we should log in before this test suite runs.
    */
   test.beforeEach(async ({ context, page }) => {
-    await logInSuccessfully(page, context, test);
+    await intercept(page);
+    await logIntoShopkeep(page, context);
   });
 
-  test.afterEach(async ({ context }) => {
-    await logout(context);
+  test('can navigate to Inventory from Discover', async ({ page }) => {
+    const tab = page.locator('button >> text=Inventory');
+
+    // Look for the Products text below the profile dropdown, not next to it
+    const result = page.locator(
+      ':below(button:has-text("e2e_tester")) >> span:has-text("Products")',
+    );
+
+    // We start on the Inventory page so navigate to Discover to make sure we can get back
+    await page.goto(SHOPKEEP_ROUTES.DISCOVER);
+    await tab.waitFor();
+    expect(page.url().includes(SHOPKEEP_ROUTES.DISCOVER)).toBeTruthy();
+
+    // Navigate back to Inventory
+    await tab.click();
+    await result.waitFor();
+
+    // Ensure that the URL is for the SK inventory page
+    expect(page.url().includes(SHOPKEEP_ROUTES.INVENTORY)).toBeTruthy();
   });
 
-  // test('can navigate successfully to the Inventory page from the Overview tab', async ({
-  //   page,
-  // }) => {
-  //   // Click the Overview link in the nav
-  //   await page.click('#navOverview');
+  test('can navigate to Discover from Inventory', async ({ page }) => {
+    const tab = page.locator('button >> text=Discover');
 
-  //   await page.waitForSelector('text=Inventory');
+    // Look for the Suppliers text below the profile dropdown, not next to it
+    const result = page.locator(':below(button:has-text("e2e_tester")):text("Suppliers")');
 
-  //   // Ensure that the URL is for the SK inventory page
-  //   expect(page.url().includes(SHOPKEEP_ROUTES.INVENTORY)).toBeTruthy();
-  // });
+    // Navigate via clicking the tab in the nav
+    expect(page.url().includes(SHOPKEEP_ROUTES.INVENTORY)).toBeTruthy();
+    await tab.click();
+    await result.waitFor();
 
-  // test('can navigate successfully to the Discover page from the Discover tab', async ({
-  //   page,
-  //   browserName,
-  // }) => {
-  //   test.skip(browserName === 'webkit', 'Flaky test on webkit - skipping for now');
+    // Ensure that the URL is for the SK discover page
+    expect(page.url().includes(SHOPKEEP_ROUTES.DISCOVER)).toBeTruthy();
+  });
 
-  //   // Click the Discover link in the nav
-  //   await page.click('#navDiscover');
+  test('can navigate to Suppliers from Inventory', async ({ page }) => {
+    const tab = page.locator('button >> text="My Suppliers"');
+    const result = page.locator('text="1 Supplier"');
 
-  //   await page.waitForSelector('text=Discover');
+    // Navigate via clicking the tab in the nav
+    expect(page.url().includes(SHOPKEEP_ROUTES.INVENTORY)).toBeTruthy();
+    await tab.click();
+    await result.waitFor();
 
-  //   // Ensure that the URL is for the SK discover page
-  //   expect(page.url().includes(SHOPKEEP_ROUTES.DISCOVER)).toBeTruthy();
-  // });
+    // Ensure that the URL is for the SK suppliers page
+    expect(page.url().includes(SHOPKEEP_ROUTES.SUPPLIERS)).toBeTruthy();
+  });
 
-  // test('can navigate successfully to the Requests page from the Requests tab', async ({
-  //   page,
-  //   browserName,
-  // }) => {
-  //   test.skip(browserName === 'webkit', 'Flaky test on webkit - skipping for now');
+  test('can navigate to Proposals from Inventory', async ({ page }) => {
+    const tab = page.locator('button >> text="Proposals"');
+    const result = page.locator('text="Proposal to e2e_tester"');
 
-  //   // Click the Requests link in the nav
-  //   await page.click('#navRequests');
+    // Navigate via clicking the tab in the nav
+    expect(page.url().includes(SHOPKEEP_ROUTES.INVENTORY)).toBeTruthy();
+    await tab.click();
+    await result.waitFor();
 
-  //   await page.waitForSelector('text=Requests');
+    // Ensure that the URL is for the SK proposals page
+    expect(page.url().includes(SHOPKEEP_ROUTES.PROPOSALS)).toBeTruthy();
+  });
 
-  //   // Ensure that the URL is for the SK requests page
-  //   expect(page.url().includes(SHOPKEEP_ROUTES.REQUESTS)).toBeTruthy();
-  // });
+  test('can navigate to Invite from Inventory', async ({ page }) => {
+    const tab = page.locator('button >> text="Invite a Brand"');
+    const result = page.locator(
+      'text="Get started by inviting brands you trust. You\'ll be selling together in no time."',
+    );
 
-  // test('can navigate successfully to the Orders page from the Orders tab', async ({
-  //   page,
-  //   browserName,
-  // }) => {
-  //   test.skip(browserName === 'webkit', 'Flaky test on webkit - skipping for now');
+    // Navigate via clicking the tab in the nav
+    expect(page.url().includes(SHOPKEEP_ROUTES.INVENTORY)).toBeTruthy();
+    await tab.click();
+    await result.waitFor();
 
-  //   // Click the Orders link in the nav
-  //   await page.click('#navOrders');
+    // Ensure that the URL is for the SK invite page
+    expect(page.url().includes(SHOPKEEP_ROUTES.INVITE)).toBeTruthy();
+  });
 
-  //   await page.waitForSelector("text=This is where you'll see your Orders");
+  test('can log out via dropdown', async ({ page }) => {
+    // The button that has the user's name is the dropdown in the upper right to log out
+    const profileDropdown = page.locator('button:has-text("e2e_tester")');
+    const button = page.locator('button:has-text("Log Out")');
+    const result = page.locator('button#login');
 
-  //   // Ensure that the URL is for the SK orders page
-  //   expect(page.url().includes(SHOPKEEP_ROUTES.ORDERS)).toBeTruthy();
-  // });
+    expect(page.url().includes(SHOPKEEP_ROUTES.INVENTORY)).toBeTruthy();
 
-  // test('can navigate successfully to the Settings page from the Settings tab', async ({ page }) => {
-  //   // Click the Settings link in the nav
-  //   await page.click('#navSettings');
+    // Open the profile dropdown then click the button
+    await profileDropdown.click();
+    await button.click();
+    await result.waitFor();
 
-  //   await page.waitForSelector('text=Email address');
+    // Ensure that the URL is for the login page
+    expect(page.url().includes(SHOPKEEP_ROUTES.LOGIN)).toBeTruthy();
+  });
 
-  //   // Ensure that the URL is for the SK settings page
-  //   expect(page.url()).toBe(SHOPKEEP_ROUTES.SETTINGS);
-  // });
+  test('can navigate to Settings via dropdown', async ({ page }) => {
+    // The button that has the user's name is the dropdown in the upper right to log out
+    const profileDropdown = page.locator('button:has-text("e2e_tester")');
+    const button = page.locator('button:has-text("Settings") >> nth=0');
+    const result = page.locator('text="Deactivate account"');
 
-  // test('can navigate successfully to the FAQ page from the FAQ tab', async ({ page }) => {
-  //   // Click the FAQ link in the nav
-  //   await page.click('#navFAQ');
+    expect(page.url().includes(SHOPKEEP_ROUTES.INVENTORY)).toBeTruthy();
 
-  //   await page.waitForSelector('text=Frequently Asked Questions');
+    // Open the profile dropdown then click the button
+    await profileDropdown.click();
+    await button.click();
+    await result.waitFor();
 
-  //   // Ensure that the URL is for the SK FAQ page
-  //   expect(page.url()).toBe(SHOPKEEP_ROUTES.FAQ);
-  // });
+    // Ensure that the URL is for the settings page
+    expect(page.url().includes(SHOPKEEP_ROUTES.SETTINGS)).toBeTruthy();
+  });
+
+  test('can navigate to external FAQs via dropdown', async ({ page, context }) => {
+    // The button that has the user's name is the dropdown in the upper right to log out
+    const profileDropdown = page.locator('button:has-text("e2e_tester")');
+    const button = page.locator('button:has-text("FAQs")');
+
+    expect(page.url().includes(SHOPKEEP_ROUTES.INVENTORY)).toBeTruthy();
+
+    // Open the profile dropdown then click the button (which opens a new page)
+    await profileDropdown.click();
+    const [newPage] = await Promise.all([context.waitForEvent('page'), button.click()]);
+
+    // Ensure that the new page's URL is for the external FAQ page and the existing page didn't change
+    expect(page.url().includes(SHOPKEEP_ROUTES.INVENTORY)).toBeTruthy();
+    expect(newPage.url().includes('https://faq.shopcanal.com/en/')).toBeTruthy();
+  });
+
+  test('can navigate to external Become a Supplier via dropdown', async ({ page, context }) => {
+    // The button that has the user's name is the dropdown in the upper right to log out
+    const profileDropdown = page.locator('button:has-text("e2e_tester")');
+    const button = page.locator('button:has-text("Become a Supplier")');
+
+    expect(page.url().includes(SHOPKEEP_ROUTES.INVENTORY)).toBeTruthy();
+
+    // Open the profile dropdown then click the button (which opens a new page)
+    await profileDropdown.click();
+    const [newPage] = await Promise.all([context.waitForEvent('page'), button.click()]);
+
+    // Ensure that the new page's URL is for the external sign up form page and the existing page didn't change
+    expect(page.url().includes(SHOPKEEP_ROUTES.INVENTORY)).toBeTruthy();
+    expect(newPage.url().includes('https://develop.shopcanal.com/request-invitation')).toBeTruthy();
+  });
+
+  test('can navigate to external Give Feedback via dropdown', async ({ page, context }) => {
+    // The button that has the user's name is the dropdown in the upper right to log out
+    const profileDropdown = page.locator('button:has-text("e2e_tester")');
+    const button = page.locator('button:has-text("Give feedback")');
+
+    expect(page.url().includes(SHOPKEEP_ROUTES.INVENTORY)).toBeTruthy();
+
+    // Open the profile dropdown then click the button (which opens a new page)
+    await profileDropdown.click();
+    const [newPage] = await Promise.all([context.waitForEvent('page'), button.click()]);
+
+    // Ensure that the new page's URL is for the external FAQ page and the existing page didn't change
+    expect(page.url().includes(SHOPKEEP_ROUTES.INVENTORY)).toBeTruthy();
+    expect(
+      newPage.url().includes('https://form.asana.com/?k=ZJZ2VpGVKmafm1ZSbF71jQ&d=1199691950954316'),
+    ).toBeTruthy();
+  });
 });

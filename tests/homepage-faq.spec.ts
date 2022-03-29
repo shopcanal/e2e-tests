@@ -1,4 +1,7 @@
 import { expect, test } from '@playwright/test';
+import { intercept } from '../helpers/intercept';
+
+test.beforeEach(async ({ page }) => intercept(page));
 
 /**
  * This file contains tests that confirm our main dev site, https://develop.shopcanal.com, has an
@@ -19,54 +22,41 @@ const FAQ_TEXT = [
   "How do I access Canal's network of brands?",
 ];
 
-// The element that has "Canal helps D2C brands" within it and is a collapsible element
-// const COLLAPSIBLE_SELECTOR = '#basic-collapsible:has(:text("Canal helps D2C brands"))';
-
+// The element that shows up when we click on an FAQ element has the class react-reveal, so it should be hidden to start with, then show up when clicked
 test('Has all FAQs', async ({ page }) => {
   await page.goto(MAIN_SITE);
 
-  // Captures the parent of the dropdown containers that have inside of them button + basic collapsible elements
+  // Makes sure each of the FAQs exist, but the collapsible items aren't yet visible
   for (const item of FAQ_TEXT) {
-    const selector = `button:has(:text("${item}"))`;
-    const faq = await page.waitForSelector(selector, {
-      state: 'attached',
-    });
+    const selector = `button:has-text("${item}")`;
+    const faq = page.locator(selector);
+    await faq.waitFor();
 
-    const collapsibleElement = await page.waitForSelector(`:below(${selector})`, {
-      state: 'attached',
-    });
-
-    // Make sure both the FAQ and the collapsible element exists
-    expect(faq).toBeTruthy();
-    expect(collapsibleElement).toBeTruthy();
+    // There's two, the second is the cookie banner
+    const collapsibleElement = page.locator(`.react-reveal:below(${selector}) >> nth=0`);
+    await collapsibleElement.waitFor({ state: 'detached' });
   }
 });
 
-// test('First FAQ dropdown can be clicked on', async ({ page, browserName }) => {
-//   test.skip(browserName === 'webkit', 'Flaky test on webkit - skipping for now');
+test('First FAQ dropdown can be clicked on', async ({ page }) => {
+  const faqText = page.locator(`button:has-text("${FAQ_TEXT[0]}")`);
+  // There's two, the second is the cookie banner
+  const collapsibleElement = page.locator(
+    `.react-reveal:below(button:has-text("${FAQ_TEXT[0]}")) >> nth=0`,
+  );
 
-//   const expandedState = () => page.getAttribute(COLLAPSIBLE_SELECTOR, 'aria-expanded');
+  await page.goto(MAIN_SITE);
 
-//   const height = async (state: 'attached' | 'visible') => {
-//     const element = await page.waitForSelector(COLLAPSIBLE_SELECTOR, {
-//       state,
-//     });
-//     const box = await element.boundingBox();
-//     return box?.height ?? 0;
-//   };
+  // Starts out unattached in the DOM
+  await collapsibleElement.waitFor({ state: 'detached' });
 
-//   await page.goto(MAIN_SITE);
+  // Open the dropdown and wait till it's onscreen and the bounding box has stopped changing
+  await faqText.click();
+  await collapsibleElement.waitFor({
+    state: 'visible',
+  });
 
-//   // Starts out closed and minimized
-//   expect(await expandedState()).toBe('false');
-//   expect(await height('attached')).toBe(0);
-
-//   // Open the dropdown
-//   await page.click(`text=${FAQ_TEXT[0]}`);
-
-//   setTimeout(() => '', 1000);
-
-//   // Ensure it's open and larger than 0
-//   expect(await expandedState()).toBe('true');
-//   expect(await height('visible')).toBeGreaterThan(0);
-// });
+  // Ensure it's now visible and height is larger than 0
+  const box = await collapsibleElement.boundingBox();
+  expect(box?.height).toBeGreaterThan(0);
+});

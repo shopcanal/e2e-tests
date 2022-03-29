@@ -1,4 +1,7 @@
 import { expect, test } from '@playwright/test';
+import { intercept } from '../helpers/intercept';
+
+test.beforeEach(async ({ page }) => intercept(page));
 
 /**
  * This file contains tests that confirm our main site, https://shopcanal.com, is up and
