@@ -55,7 +55,7 @@ test.describe('Shopkeep Navigation', () => {
 
   test('can navigate to Suppliers from Inventory', async ({ page }) => {
     const tab = page.locator('button >> text="My Suppliers"');
-    const result = page.locator('text="1 Supplier"');
+    const result = page.locator('text="No Suppliers"');
 
     // Navigate via clicking the tab in the nav
     expect(page.url().includes(SHOPKEEP_ROUTES.INVENTORY)).toBeTruthy();
@@ -68,7 +68,7 @@ test.describe('Shopkeep Navigation', () => {
 
   test('can navigate to Proposals from Inventory', async ({ page }) => {
     const tab = page.locator('button >> text="Proposals"');
-    const result = page.locator('text="Proposal to e2e_tester"');
+    const result = page.locator('text="No proposals"');
 
     // Navigate via clicking the tab in the nav
     expect(page.url().includes(SHOPKEEP_ROUTES.INVENTORY)).toBeTruthy();
