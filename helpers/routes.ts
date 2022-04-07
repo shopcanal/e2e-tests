@@ -10,6 +10,7 @@ export const SK_APP_URL = `${DOMAIN}/shopkeep/inventory?embedded=true&canal_app_
 
 export const SHOPKEEP_ROUTES = {
   LOGIN: `${DOMAIN}/login`,
+  ROOT: SHOPKEEP,
   DISCOVER: `${SHOPKEEP}/discover`,
   INVENTORY: `${SHOPKEEP}/inventory`,
   SUPPLIERS: `${SHOPKEEP}/suppliers`,
